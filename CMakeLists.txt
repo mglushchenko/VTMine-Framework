@@ -7,11 +7,15 @@ project(vtmine VERSION 1.0)
 
 set(SOURCE_FILES
     src/main.cpp
-    src/IFramework.h
-    src/MainWorker.h
-    src/MainWorker.cpp
-    src/Logger.h
-    src/PluginManager.h
+    src/i_framework.h
+    src/framework_def_impl.h
+    src/framework_def_impl.cpp
+    src/logger.h
+    src/plugin_manager.h
+    src/app_starter.h
+    src/app_starter.cpp
+    src/cmd_line_params.h
+    src/cmd_line_params.cpp
 )
 
 find_package(Qt5 COMPONENTS Core REQUIRED)

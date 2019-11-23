@@ -3,11 +3,13 @@
 
 namespace vtmine
 {
+
 class IFramework
 {
 public:
     virtual ~IFramework() {}
 };
-}
+
+} // namespace vtmine
 
 #endif // IFRAMEWORK_H

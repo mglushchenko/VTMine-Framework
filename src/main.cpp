@@ -1,22 +1,20 @@
 #include <QApplication>
 #include <QPushButton>
 #include <QWidget>
-#include "MainWorker.h"
-
-//namespace vtmine
-//{
+#include "framework_def_impl.h"
+#include "app_starter.h"
 
 int main(int argc, char *argv[])
 {
-    // костыль!
     using namespace vtmine;
 
-    QApplication app(argc, argv);
-    QPushButton button("hello");
-    button.show();
+    AppStarter appStarter;
+    return appStarter.run(argc, argv);
 
-    MainWorker* framework(MainWorker::getInstance());
-    return app.exec();
+//    QApplication app(argc, argv);
+//    QPushButton button("hello");
+//    button.show();
+
+//    return app.exec();
 }
 
-//} // namespace vtmine
