@@ -34,3 +34,4 @@
 *.user
 build-debug/
 tasks/
+*.autosave
