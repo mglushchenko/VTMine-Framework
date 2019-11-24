@@ -16,6 +16,8 @@ set(SOURCE_FILES
     src/app_starter.cpp
     src/cmd_line_params.h
     src/cmd_line_params.cpp
+    src/framework_settings.h
+    src/framework_settings.cpp
 )
 
 find_package(Qt5 COMPONENTS Core REQUIRED)
