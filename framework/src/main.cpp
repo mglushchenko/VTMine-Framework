@@ -1,8 +1,8 @@
 #include <QApplication>
 #include <QPushButton>
 #include <QWidget>
-#include "framework_def_impl.h"
-#include "app_starter.h"
+#include "core/framework_def_impl.h"
+#include "core/app_starter.h"
 
 int main(int argc, char *argv[])
 {
