@@ -1,5 +1,5 @@
-#ifndef VTMINE_SRC_IFRAMEWORK_H_
-#define VTMINE_SRC_IFRAMEWORK_H_
+#ifndef VTMINE_FRAMEWORK_SRC_CORE_IFRAMEWORK_H_
+#define VTMINE_FRAMEWORK_SRC_CORE_IFRAMEWORK_H_
 
 namespace vtmine {
 
@@ -17,4 +17,4 @@ public:
 
 } // namespace vtmine
 
-#endif // VTMINE_SRC_IFRAMEWORK_H_
+#endif // VTMINE_FRAMEWORK_SRC_CORE_IFRAMEWORK_H_

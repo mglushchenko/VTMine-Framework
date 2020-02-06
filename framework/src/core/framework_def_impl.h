@@ -1,5 +1,5 @@
-#ifndef VTMINE_SRC_FRAMEWORK_DEF_IMPL_H_
-#define VTMINE_SRC_FRAMEWORK_DEF_IMPL_H_
+#ifndef VTMINE_FRAMEWORK_SRC_CORE_FRAMEWORK_DEF_IMPL_H_
+#define VTMINE_FRAMEWORK_SRC_CORE_FRAMEWORK_DEF_IMPL_H_
 
 #include "i_framework.h"
 #include "logger.h"
@@ -56,4 +56,4 @@ protected:
 
 } // namespace vtmine
 
-#endif // VTMINE_SRC_FRAMEWORK_DEF_IMPL_H_
+#endif // VTMINE_FRAMEWORK_SRC_CORE_FRAMEWORK_DEF_IMPL_H_

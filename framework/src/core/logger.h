@@ -1,5 +1,5 @@
-#ifndef VTMINE_SRC_LOGGER_H_
-#define VTMINE_SRC_LOGGER_H_
+#ifndef VTMINE_FRAMEWORK_SRC_CORE_LOGGER_H_
+#define VTMINE_FRAMEWORK_SRC_CORE_LOGGER_H_
 
 namespace vtmine
 {
@@ -14,4 +14,4 @@ public:
 
 } // namespace vtmine
 
-#endif // VTMINE_SRC_LOGGER_H_
+#endif // VTMINE_FRAMEWORK_SRC_CORE_LOGGER_H_

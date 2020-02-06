@@ -1,5 +1,5 @@
-#ifndef VTMINE_SRC_CMDLINEPARAMS_H_
-#define VTMINE_SRC_CMDLINEPARAMS_H_
+#ifndef VTMINE_FRAMEWORK_SRC_CORE_CMDLINEPARAMS_H_
+#define VTMINE_FRAMEWORK_SRC_CORE_CMDLINEPARAMS_H_
 
 #include<string>
 
@@ -38,4 +38,4 @@ private:
 }; // class CmdLineParams
 } // namespace vtmine
 
-#endif // VTMINE_SRC_CMDLINEPARAMS_H_
+#endif // VTMINE_FRAMEWORK_SRC_CORE_CMDLINEPARAMS_H_

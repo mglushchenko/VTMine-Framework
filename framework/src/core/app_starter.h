@@ -1,5 +1,5 @@
-#ifndef VTMINE_SRC_APPSTARTER_H_
-#define VTMINE_SRC_APPSTARTER_H_
+#ifndef VTMINE_FRAMEWORK_SRC_CORE_APPSTARTER_H_
+#define VTMINE_FRAMEWORK_SRC_CORE_APPSTARTER_H_
 
 #include "framework_def_impl.h"
 #include "cmd_line_params.h"
@@ -67,4 +67,4 @@ protected:
 }; // class AppStarter
 } // namespace vtmine
 
-#endif // VTMINE_SRC_APPSTARTER_H_
+#endif // VTMINE_FRAMEWORK_SRC_CORE_APPSTARTER_H_

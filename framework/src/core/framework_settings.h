@@ -1,5 +1,5 @@
-#ifndef FRAMEWORKSETTINGS_H
-#define FRAMEWORKSETTINGS_H
+#ifndef VTMINE_FRAMEWORK_SRC_CORE_FRAMEWORKSETTINGS_H
+#define VTMINE_FRAMEWORK_SRC_CORE_FRAMEWORKSETTINGS_H
 
 /**
  * @brief Represents framework settings obtained from configuration parameters.
@@ -13,4 +13,4 @@ public:
     FrameworkSettings();
 };
 
-#endif // FRAMEWORKSETTINGS_H
+#endif // VTMINE_FRAMEWORK_SRC_CORE_FRAMEWORKSETTINGS_H
