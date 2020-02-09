@@ -7,4 +7,11 @@ FrameworkDefImpl::~FrameworkDefImpl()
 
 }
 
+// TODO: почему не было определения этого метода?!
+void FrameworkDefImpl::init(CmdLineParams& params)
+{
+
+}
+
+
 } // namespace vtmine

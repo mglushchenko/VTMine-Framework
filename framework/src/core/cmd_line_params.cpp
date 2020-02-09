@@ -3,10 +3,12 @@
 
 namespace vtmine {
 
+
 CmdLineParams::CmdLineParams()
 {
     _configFileName = "";
 }
+
 
 bool CmdLineParams::parse(int argc, char* argv[])
 {
@@ -27,4 +29,6 @@ bool CmdLineParams::parse(int argc, char* argv[])
     // in case of success
     return true;
 }
+
+
 } // namespace vtmine

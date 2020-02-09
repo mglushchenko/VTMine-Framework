@@ -7,10 +7,24 @@ project(VTMine VERSION 1.0)
 find_package(Qt5 COMPONENTS Core REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 
-add_executable(VTMine main.cpp)
+
+add_executable(VTMine 
+    main.cpp
+    core/i_framework.h
+    core/framework_def_impl.h
+    core/framework_def_impl.cpp
+    core/logger.h
+    core/plugin_manager.h
+    core/app_starter.h
+    core/app_starter.cpp
+    core/cmd_line_params.h
+    core/cmd_line_params.cpp
+    core/framework_settings.h
+    core/framework_settings.cpp
+)
 target_link_libraries(VTMine Qt5::Widgets)
 
-add_subdirectory(core)
+#add_subdirectory(core)
 
 
 
