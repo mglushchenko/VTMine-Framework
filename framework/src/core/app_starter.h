@@ -15,8 +15,9 @@
 #ifndef VTMINE_FRAMEWORK_CORE_APPSTARTER_H_
 #define VTMINE_FRAMEWORK_CORE_APPSTARTER_H_
 
-#include<iostream>
-#include<memory>
+
+#include <iostream>
+#include <memory>
 
 #include "framework_def_impl.h"
 #include "cmd_line_params.h"
@@ -24,9 +25,9 @@
 
 namespace vtmine {
 
-/**
- *  \brief Class that starts the app and initializes the framework.
- */
+/***************************************************************************//**
+ *  Class that starts the app and initializes the framework.
+ ******************************************************************************/
 class AppStarter {
 public:
     /**
@@ -77,5 +78,6 @@ protected:
 }; // class AppStarter
 
 } // namespace vtmine
+
 
 #endif // VTMINE_FRAMEWORK_CORE_APPSTARTER_H_

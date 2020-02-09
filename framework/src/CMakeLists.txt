@@ -10,7 +10,7 @@ find_package(Qt5Widgets REQUIRED)
 
 add_executable(VTMine 
     main.cpp
-    core/i_framework.h
+    core/framework.h
     core/framework_def_impl.h
     core/framework_def_impl.cpp
     core/logger.h

@@ -1,9 +1,12 @@
 #ifndef VTMINE_FRAMEWORK_SRC_CORE_LOGGER_H_
 #define VTMINE_FRAMEWORK_SRC_CORE_LOGGER_H_
 
-namespace vtmine
-{
 
+namespace vtmine {
+
+/***************************************************************************//**
+ *  Default logger.
+ ******************************************************************************/
 class Logger
 {
 public:
@@ -13,5 +16,6 @@ public:
 };
 
 } // namespace vtmine
+
 
 #endif // VTMINE_FRAMEWORK_SRC_CORE_LOGGER_H_

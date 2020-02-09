@@ -1,17 +1,19 @@
 #ifndef VTMINE_FRAMEWORK_CORE_FRAMEWORK_DEF_IMPL_H_
 #define VTMINE_FRAMEWORK_CORE_FRAMEWORK_DEF_IMPL_H_
 
-#include "i_framework.h"
+
+#include "framework.h"
 #include "logger.h"
 #include "plugin_manager.h"
 #include "cmd_line_params.h"
 #include "framework_settings.h"
 
+
 namespace vtmine {
 
-/**
- * @brief Default framework implementation.
- */
+/***************************************************************************//**
+ *  Default framework implementation.
+ ******************************************************************************/
 class FrameworkDefImpl: public IFramework
 {
 public:
@@ -55,5 +57,6 @@ protected:
 }; // class FrameworkDefImpl
 
 } // namespace vtmine
+
 
 #endif // VTMINE_FRAMEWORK_CORE_FRAMEWORK_DEF_IMPL_H_

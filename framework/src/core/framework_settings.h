@@ -1,9 +1,10 @@
-#ifndef VTMINE_FRAMEWORK_CORE_FRAMEWORKSETTINGS_H
-#define VTMINE_FRAMEWORK_CORE_FRAMEWORKSETTINGS_H
+#ifndef VTMINE_FRAMEWORK_CORE_FRAMEWORK_SETTINGS_H
+#define VTMINE_FRAMEWORK_CORE_FRAMEWORK_SETTINGS_H
 
-/**
- * @brief Represents framework settings obtained from configuration parameters.
- */
+
+/***************************************************************************//**
+ *  Represents framework settings obtained from configuration parameters.
+ ******************************************************************************/
 class FrameworkSettings
 {
 public:
@@ -13,4 +14,5 @@ public:
     FrameworkSettings();
 };
 
-#endif // VTMINE_FRAMEWORK_CORE_FRAMEWORKSETTINGS_H
+
+#endif // VTMINE_FRAMEWORK_CORE_FRAMEWORK_SETTINGS_H

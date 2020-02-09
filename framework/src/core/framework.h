@@ -1,11 +1,12 @@
-#ifndef VTMINE_FRAMEWORK_SRC_CORE_IFRAMEWORK_H_
-#define VTMINE_FRAMEWORK_SRC_CORE_IFRAMEWORK_H_
+#ifndef VTMINE_FRAMEWORK_CORE_FRAMEWORK_H_
+#define VTMINE_FRAMEWORK_CORE_FRAMEWORK_H_
+
 
 namespace vtmine {
 
-/**
- * @brief An base interface for framework implementations.
- */
+/***************************************************************************//**
+ *  An base interface for framework implementations.
+ ******************************************************************************/
 class IFramework
 {
 public:
@@ -17,4 +18,5 @@ public:
 
 } // namespace vtmine
 
-#endif // VTMINE_FRAMEWORK_SRC_CORE_IFRAMEWORK_H_
+
+#endif // VTMINE_FRAMEWORK_CORE_FRAMEWORK_H_
