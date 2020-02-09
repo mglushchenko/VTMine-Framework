@@ -61,10 +61,16 @@ void AppStarter::makeDefFramework(int argc, char* argv[])
                         "framework has been already created", "");
     }
 
+
+    // TODO: последовательность действи!
+
+
     _frmw = new FrameworkDefImpl();
     // TODO: init method (pass _cmdlParams&)
 
     if (_cmdlParams.getConfigFileName().empty())
-        reportException("No configuration file present", "");
+        reportException("No configuration file present", "");   // TODO: здесь должен быть throw, а ловить и репортить не здесь, а вовне!
 }
+
+
 } // namespace vtmine
