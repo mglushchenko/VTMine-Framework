@@ -8,13 +8,10 @@
  *
  ******************************************************************************/
 
-#include "framework_settings.h"
+#include "vtmexception.h"
 
 namespace vtmine {
 
-FrameworkSettings::FrameworkSettings(std::vector<std::string> plugins)
-{
-    _plugins = plugins;
-}
+
 
 } // namespace vtmine

@@ -30,39 +30,32 @@ namespace vtmine {
  ******************************************************************************/
 class AppStarter {
 public:
-    /**
-     *  \brief No-arguments default constructor.
-     */
+    /// No-arguments default constructor.
     AppStarter()
         :  _frmw(nullptr)
     {
     }
 
-    /**
-     *  \brief Last-resort exception handling.
+    /** \brief Last-resort exception handling.
      *  \param argc -- number of cmd arguments.
      *  \param argv -- cmd arguments.
      *  \return Error code (0 in case of success).
      */
     int run(int argc, char *argv[]);
 
-    /**
-     *  \brief Main app starter.
-     *
+    /** \brief Main app starter.
      *  Params and the return value are the same as in run().
      */
     int main(int argc, char *argv[]);
 
 protected:
-    /**
-     *  \brief Factory method for a framework instance. Initializes _frmw field.
+    /** \brief Factory method for a framework instance. Initializes _frmw field.
      *  \param argc -- number of cmd arguments.
      *  \param argv -- cmd arguments.
      */
     void makeDefFramework(int argc, char* argv[]);
 
-    /**
-     *  \brief Displays a message about an exception.
+    /** \brief Displays a message about an exception.
      *  \param what -- error description.
      *  \param capt -- exception source.
      */

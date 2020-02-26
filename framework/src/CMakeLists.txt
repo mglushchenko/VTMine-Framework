@@ -6,6 +6,7 @@ project(VTMine VERSION 1.0)
 
 find_package(Qt5 COMPONENTS Core REQUIRED)
 find_package(Qt5Widgets REQUIRED)
+#find_package(nlohmann_json 3.2.0 REQUIRED)
 
 
 add_executable(VTMine 
@@ -21,8 +22,11 @@ add_executable(VTMine
     core/cmd_line_params.cpp
     core/framework_settings.h
     core/framework_settings.cpp
+    core/vtmexception.h
+    core/vtmexception.cpp
 )
 target_link_libraries(VTMine Qt5::Widgets)
+#target_link_libraries(VTMine PRIVATE nlohmann_json::nlohmann_json)
 
 #add_subdirectory(core)
 

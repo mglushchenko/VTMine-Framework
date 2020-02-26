@@ -9,6 +9,7 @@
  ******************************************************************************/
 
 #include "app_starter.h"
+#include "vtmexception.h"
 
 
 namespace vtmine {
@@ -28,6 +29,10 @@ int AppStarter::run(int argc, char *argv[])
     // main app exception handler
     try {
         res = main(argc, argv);
+    }
+    catch (VTMException& e)
+    {
+        reportException(e.what(), "Framework exception handler");
     }
     catch (const std::exception& e)
     {
@@ -57,19 +62,15 @@ void AppStarter::makeDefFramework(int argc, char* argv[])
     _cmdlParams.parse(argc, argv);
     if(_frmw)
     {
-        reportException("Critical error: "
-                        "framework has been already created", "");
+        throw VTMException("Critical error: "
+                           "framework has already been created!");
     }
 
-
-    // TODO: последовательность действи!
-
+    if (_cmdlParams.getConfigFileName().empty())
+        throw VTMException("Configuration file not found!");
 
     _frmw = new FrameworkDefImpl();
-    // TODO: init method (pass _cmdlParams&)
-
-    if (_cmdlParams.getConfigFileName().empty())
-        reportException("No configuration file present", "");   // TODO: здесь должен быть throw, а ловить и репортить не здесь, а вовне!
+    _frmw->init(_cmdlParams);
 }
 
 

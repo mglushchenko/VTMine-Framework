@@ -3,7 +3,7 @@
  *  \brief     VTMine Framework: command line parser.
  *  \author    Sergey Shershakov, Maria Gluschenko
  *  \version   0.1.0
- *  \date      09.02.2020
+ *  \date      19.02.2020
  *  \copyright (c) xidv.ru 2014–2020.
  *             This source is for internal use only — Restricted Distribution.
  *             All rights reserved.
@@ -16,7 +16,8 @@
 #define VTMINE_FRAMEWORK_CORE_CMDLINEPARAMS_H_
 
 
-#include<string>
+#include <string>
+#include <vector>
 
 
 namespace vtmine {
@@ -42,9 +43,17 @@ public:
      */
     bool parse(int argc, char* argv[]);
 
+    bool parseConfigJSON();
+
+    /// Getter for plugin files.
+    std::vector<std::string> getPlugins() {return _pluginFiles;}
+
 private:
     /// Configuration file name.
     std::string _configFileName;
+
+    /// Names of plugin files to be loaded.
+    std::vector<std::string> _pluginFiles;
 
 }; // class CmdLineParams
 

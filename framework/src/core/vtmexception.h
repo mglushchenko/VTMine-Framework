@@ -8,37 +8,47 @@
  *             This source is for internal use only — Restricted Distribution.
  *             All rights reserved.
  *
- *  Framework settings.
+ *  Custom framework exception.
  *
  ******************************************************************************/
 
-
-#ifndef VTMINE_FRAMEWORK_CORE_FRAMEWORK_SETTINGS_H
-#define VTMINE_FRAMEWORK_CORE_FRAMEWORK_SETTINGS_H
+#ifndef VTMINE_FRAMEWORK_CORE_VTMEXCEPTION_H
+#define VTMINE_FRAMEWORK_CORE_VTMEXCEPTION_H
 
 
 #include <string>
-#include <vector>
+#include <exception>
 
 
 namespace vtmine {
 
 /***************************************************************************//**
- *  Represents framework settings obtained from configuration parameters.
+ *  Custom framework exception class.
  ******************************************************************************/
-class FrameworkSettings {
+class VTMException: public std::exception {
 public:
-    /** \brief Framework settings contructor.
-     * @param plugins -- names of plugin files.
+    /** \brief Exception constructor.
+     * \param message -- error message.
      */
-    FrameworkSettings(std::vector<std::string> plugins);
+    VTMException(const std::string& message)
+                : errorMessage(message)
+    {
+    }
+
+    /** \brief Describes the exception.
+     * \return Error message.
+     */
+    const char* what() const throw ()
+    {
+        return errorMessage.c_str();
+    }
 
 private:
-    /// Plugin files.
-    std::vector<std::string> _plugins;
-}; // class FrameworkSettings
+    /// Error description.
+    std::string errorMessage;
+
+}; // class VTMException
 
 } // namespace vtmine
 
-
-#endif // VTMINE_FRAMEWORK_CORE_FRAMEWORK_SETTINGS_H
+#endif // VTMINE_FRAMEWORK_CORE_VTMEXCEPTION_H
