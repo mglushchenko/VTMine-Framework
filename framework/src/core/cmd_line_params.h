@@ -43,17 +43,10 @@ public:
      */
     bool parse(int argc, char* argv[]);
 
-    bool parseConfigJSON();
-
-    /// Getter for plugin files.
-    std::vector<std::string> getPlugins() {return _pluginFiles;}
 
 private:
     /// Configuration file name.
     std::string _configFileName;
-
-    /// Names of plugin files to be loaded.
-    std::vector<std::string> _pluginFiles;
 
 }; // class CmdLineParams
 

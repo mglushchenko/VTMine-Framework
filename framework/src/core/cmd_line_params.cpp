@@ -17,7 +17,7 @@
 #include "cmd_line_params.h"
 #include "vtmexception.h"
 #include "framework_settings.h"
-#include "json.hpp"
+#include "../extlib/json.hpp"
 
 
 namespace vtmine {
@@ -35,34 +35,33 @@ bool CmdLineParams::parse(int argc, char* argv[])
         return false;
 
     bool configFilePassed = false;
-    for (int i = 0; i < argc - 1; ++i)
+    for (int i = 0; i < argc; ++i)
+    {
+        // Configuration file
         if (strcmp(argv[i], "-c") == 0 && i != argc - 1)
         {
             _configFileName = argv[i+1];
             configFilePassed = true;
         }
+        // Help
+        if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0)
+        {
+            std::ifstream fin("../../docs/spec/cmd_params.md");
+            if (fin.is_open())
+            {
+                std::string s;
+                while (std::getline(fin, s))
+                    std::cout << s << std::endl;
+            }
+            else
+                throw VTMException("Can't find help file!");
+        }
+    }
 
     if (!configFilePassed)
         return false;
 
-    // in case of success
-    parseConfigJSON();
     return true;
-}
-
-
-bool CmdLineParams::parseConfigJSON()
-{
-    std::ifstream configFile(_configFileName);
-    if (!configFile)
-        throw VTMException("Couldn't open configuration file."
-                           "Perhaps it doesn't exist or the path is incorrect");
-    // json parsing
-    nlohmann::json j;
-    configFile >> j;
-    _pluginFiles = j["pluginfiles"].get<std::vector<std::string>>();
-    configFile.close();
-    return false;
 }
 
 

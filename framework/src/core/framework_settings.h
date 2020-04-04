@@ -20,6 +20,8 @@
 #include <string>
 #include <vector>
 
+#include "../extlib/json.hpp"
+
 
 namespace vtmine {
 
@@ -29,11 +31,21 @@ namespace vtmine {
 class FrameworkSettings {
 public:
     /** \brief Framework settings contructor.
-     * @param plugins -- names of plugin files.
+     * \param plugins -- names of plugin files.
      */
-    FrameworkSettings(std::vector<std::string> plugins);
+    FrameworkSettings(std::string configFileName);
+
+
+    /** \brief Parses plugin configuration from config file.
+     * \param configFileName -- name of configuration file.
+     * \return True in case of success.
+     */
+    bool parseConfigJSON(nlohmann::json& pluginsConfig);
 
 private:
+    /// Configuration file name.
+    std::string _configFileName;
+
     /// Plugin files.
     std::vector<std::string> _plugins;
 }; // class FrameworkSettings

@@ -31,13 +31,13 @@ namespace vtmine {
 class FrameworkDefImpl: public IFramework {
 public:
      /// No-arguments default constructor.
-    FrameworkDefImpl() {}
+    FrameworkDefImpl(){}
 
     /// Virtual destructor.
     virtual ~FrameworkDefImpl(); //{}
 
-    /** @brief Initializes the framework with user-specified parameters.
-     * @param params -- configuration parameters parsed from command line.
+    /** \brief Initializes the framework with user-specified parameters.
+     * \param params -- configuration parameters parsed from command line.
      */
     virtual void init(CmdLineParams& params);
 
@@ -46,18 +46,19 @@ public:
      * @return An instance of Logger.
      */
     virtual Logger* getLogger() const {return nullptr;}
-    /** @brief Virtual getter for plugin manager.
-     * @return An instance of PluginManager.
+
+    /** \brief Virtual getter for plugin manager.
+     * \return An instance of PluginManager.
      */
-    virtual PluginManager* getPluginManager() const {return nullptr;}
+    virtual PluginManager* getPluginManager() const {return _pluginManager;}
 
 
 protected:
-    /// @brief Settings obtained from configuration parameters.
+    /// \brief Settings obtained from configuration parameters.
     FrameworkSettings* _settings;
 
 //    Logger* _logger;
-//    PluginManager* _pluginManager;
+    PluginManager* _pluginManager;
 }; // class FrameworkDefImpl
 
 } // namespace vtmine

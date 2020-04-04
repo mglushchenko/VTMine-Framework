@@ -16,6 +16,9 @@
 #define VTMINE_FRAMEWORK_CORE_PLUGINMANAGER_H_
 
 
+#include "../extlib/json.hpp"
+
+
 namespace vtmine {
 
 /***************************************************************************//**
@@ -23,8 +26,23 @@ namespace vtmine {
  ******************************************************************************/
 class PluginManager {
 public:
-    virtual ~PluginManager() {}
-    virtual void loadPlugins();
+    PluginManager() {}
+    //virtual ~PluginManager() {}
+    //virtual void loadPlugins();
+
+    /// Parses configuration of plugins.
+    void parsePluginsConfig(nlohmann::json pluginsConfig);
+
+private:
+    /// Names of plugin files to be loaded.
+    std::vector<std::string> _pluginFileNames;
+
+    /// Plugin to be loaded first.
+    std::string _mainPluginId;
+
+    /// If true, the manager can perform a topological sort
+    /// on plugins to load them in linear time later.
+    bool _allowOptimizeFileList = true;
 };
 
 } // namespace vtmine

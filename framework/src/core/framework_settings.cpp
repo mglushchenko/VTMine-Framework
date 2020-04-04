@@ -8,13 +8,36 @@
  *
  ******************************************************************************/
 
+#include <fstream>
+
 #include "framework_settings.h"
+#include "vtmexception.h"
+
 
 namespace vtmine {
 
-FrameworkSettings::FrameworkSettings(std::vector<std::string> plugins)
+FrameworkSettings::FrameworkSettings(std::string configFileName)
 {
-    _plugins = plugins;
+    _configFileName = configFileName;
+}
+
+
+bool FrameworkSettings::parseConfigJSON(nlohmann::json& pluginsConfig)
+{
+    std::ifstream configFile(_configFileName);
+    if (!configFile)
+        throw VTMException("Couldn't open configuration file."
+                           "Perhaps it doesn't exist or the path is incorrect");
+
+    // json parsing
+    nlohmann::json j;
+    configFile >> j;
+    configFile.close();
+
+    pluginsConfig = j["pluginsConfig"];
+    if (pluginsConfig == nullptr)
+        return false;  
+    return true;
 }
 
 } // namespace vtmine

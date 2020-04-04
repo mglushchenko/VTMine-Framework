@@ -1,0 +1,15 @@
+{
+	"pluginsConfig" : {
+		"pluginBaseDir: "C:/develop/projects/cpp/vtm_framework_new/framework/src",
+		
+		"pluginFileNames" : [
+			"plugin1", "plugin2"
+		],
+		
+		"mainPlugin" : "p1",
+		
+		"pluginSettings" : {},
+		
+		"allowOptimizeFileList": false
+	}
+}	

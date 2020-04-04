@@ -16,6 +16,7 @@ add_executable(VTMine
     core/framework_def_impl.cpp
     core/logger.h
     core/plugin_manager.h
+    core/plugin_manager.cpp
     core/app_starter.h
     core/app_starter.cpp
     core/cmd_line_params.h
