@@ -8,13 +8,16 @@
  *
  ******************************************************************************/
 
+
 #include <fstream>
+#include <iostream>
 
 #include "framework_settings.h"
 #include "vtmexception.h"
 
 
 namespace vtmine {
+
 
 FrameworkSettings::FrameworkSettings(std::string configFileName)
 {
@@ -30,14 +33,70 @@ bool FrameworkSettings::parseConfigJSON(nlohmann::json& pluginsConfig)
                            "Perhaps it doesn't exist or the path is incorrect");
 
     // json parsing
-    nlohmann::json j;
-    configFile >> j;
+    nlohmann::json configJSON;
+    configFile >> configJSON;
     configFile.close();
 
-    pluginsConfig = j["pluginsConfig"];
-    if (pluginsConfig == nullptr)
-        return false;  
+    if (configJSON.find(pluginsConfiguration) == configJSON.end())
+    {
+        throw VTMException("No plugins configuration provided.");
+    }
+    pluginsConfig = configJSON[pluginsConfiguration];
+    std::string baseDir = getPluginsBaseDir(pluginsConfig);
+    _pluginFileNames = getPluginFileNames(pluginsConfig);
+    for (size_t i = 0; i < _pluginFileNames.size(); ++i)
+    {
+        if (!_pluginFileNames[i].empty() && _pluginFileNames[i][0] == '?')
+            _pluginFileNames[i] = baseDir + _pluginFileNames[i];
+    }
+
+    _mainPluginId = getMainPluginId(pluginsConfig);
+    _allowOptimizeFileList = getAllowOptimize(pluginsConfig);
+
     return true;
+}
+
+std::string FrameworkSettings::getPluginsBaseDir(nlohmann::json config)
+{
+    if (config.find(pluginBaseDir) == config.end())
+    {
+        // TODO: redirect message to logger
+        std::cout << "No plugins base directory set\n";
+        return "";
+    }
+
+    return config[pluginBaseDir].get<std::string>();
+}
+
+std::vector<std::string> FrameworkSettings::getPluginFileNames(nlohmann::json config)
+{
+    if (config.find(pluginFileNames) == config.end())
+    {
+        std::cout << "No plugins passed\n";
+        return std::vector<std::string>();
+    }
+
+    return config[pluginFileNames].get<std::vector<std::string>>();
+}
+
+std::string FrameworkSettings::getMainPluginId(nlohmann::json config)
+{
+    if (config.find(mainPlugin) == config.end())
+    {
+        std::cout << "No main plugin set\n";
+        return "";
+    }
+
+    return config[mainPlugin].get<std::string>();
+}
+
+bool FrameworkSettings::getAllowOptimize(nlohmann::json config)
+{
+    // no logging because it's a normal situation
+    if (config.find(allowOptimize) == config.end())
+        return true;
+
+    return config[allowOptimize].get<bool>();
 }
 
 } // namespace vtmine

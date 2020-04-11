@@ -36,6 +36,11 @@ public:
     {
     }
 
+    ~AppStarter()
+    {
+        delete _frmw;
+    }
+
     /** \brief Last-resort exception handling.
      *  \param argc -- number of cmd arguments.
      *  \param argv -- cmd arguments.

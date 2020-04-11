@@ -25,6 +25,14 @@
 
 namespace vtmine {
 
+//namespace configKeys {
+//    const char* pluginsConfiguration = "pluginsConfig";
+//    const char* pluginBaseDir = "pluginBaseDir";
+//    const char* pluginFileNames = "pluginFileNames";
+//    const char* mainPlugin = "mainPlugin";
+//    const char* allowOptimize = "allowOptimizeFileList";
+//}
+
 /***************************************************************************//**
  *  Represents framework settings obtained from configuration parameters.
  ******************************************************************************/
@@ -42,12 +50,54 @@ public:
      */
     bool parseConfigJSON(nlohmann::json& pluginsConfig);
 
+public:
+    // Getters
+
+    std::vector<std::string> getPluginFileNames() const
+    {
+        return _pluginFileNames;
+    }
+
+    std::string getMainPluginId() const { return _mainPluginId; }
+
+    bool getAllowOptimize() const { return _allowOptimizeFileList; }
+
 private:
     /// Configuration file name.
     std::string _configFileName;
 
     /// Plugin files.
     std::vector<std::string> _plugins;
+
+    /// Names of plugin files to be loaded.
+    std::vector<std::string> _pluginFileNames;
+
+    /// Plugin to be loaded first.
+    std::string _mainPluginId;
+
+    /// If true, the manager can perform a topological sort
+    /// on plugins to load them in linear time later.
+    bool _allowOptimizeFileList = true;
+
+    // Helper methods for json parsing.
+
+    std::string getPluginsBaseDir(nlohmann::json config);
+
+    std::vector<std::string> getPluginFileNames(nlohmann::json config);
+
+    std::string getMainPluginId(nlohmann::json config);
+
+    bool getAllowOptimize(nlohmann::json config);
+
+
+    // configuration JSON keys
+
+    const char* pluginsConfiguration = "pluginsConfig";
+    const char* pluginBaseDir = "pluginBaseDir";
+    const char* pluginFileNames = "pluginFileNames";
+    const char* mainPlugin = "mainPlugin";
+    const char* allowOptimize = "allowOptimizeFileList";
+
 }; // class FrameworkSettings
 
 } // namespace vtmine

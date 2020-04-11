@@ -20,13 +20,16 @@ FrameworkDefImpl::~FrameworkDefImpl()
 }
 
 
-void FrameworkDefImpl::init(CmdLineParams& params)
+void FrameworkDefImpl::init(const CmdLineParams& params)
 { 
     _settings = new FrameworkSettings(params.getConfigFileName());
-    _pluginManager = new PluginManager();
+
     nlohmann::json pluginsConfig;
-    if (_settings->parseConfigJSON(pluginsConfig))
-        _pluginManager->parsePluginsConfig(pluginsConfig);
+    if (!_settings->parseConfigJSON(pluginsConfig))
+        throw VTMException("Invalid configuration file");
+
+    _pluginManager = new PluginManager(_settings);
+    // TODO: initialize logger
 }
 
 
