@@ -31,3 +31,20 @@ public:
 
 
 #endif // VTMINE_FRAMEWORK_CORE_FRAMEWORK_H_
+
+
+
+
+// Комментарии на весь проект
+// Создать базовый класс BaseUnit, которому будут наследовать все такие компоненты
+// приложения, как: PluginManager, ... (список дополняется)
+// содержащий (для удобства использования): указатель на фреймворк, указатель на
+// логгер, геттеры для получения этих указателей и набор хелперных методом для
+// быстрого логгирования на соответствующем уровне ошибке:
+//      logV() — log verbose
+//      logD() — log debug message
+//      logI() — information
+//      logW (warning), logE (error), logC (critical error)
+//  logW(orig, msg, errorCode = 0)
+
+// ? возможно, _settings тоже стоит убрать в BaseUnit ?

@@ -16,20 +16,30 @@ namespace vtmine {
 FrameworkDefImpl::~FrameworkDefImpl()
 {
     delete _settings;
-    delete _pluginManager;
+    delete _pluginManager;      // TODO: порядок удаления — обычно стековый
 }
 
 
 void FrameworkDefImpl::init(const CmdLineParams& params)
 { 
-    _settings = new FrameworkSettings(params.getConfigFileName());
+    _settings = new FrameworkSettings(/*this,*/params.getConfigFileName());
 
-    nlohmann::json pluginsConfig;
+    nlohmann::json pluginsConfig;                           // TODO: имя неудачное
     if (!_settings->parseConfigJSON(pluginsConfig))
         throw VTMException("Invalid configuration file");
 
-    _pluginManager = new PluginManager(_settings);
     // TODO: initialize logger
+    // в принципе, параметры логгирования (имя файла, где он лежит, тип компонента
+    // логгирование — все это может быть востребовано в настройках)
+    // _logger = new..... логгер опр. типа с параметрами из настроек
+    //  если получится (скорее всего, с учетом анализа настроек) много кода,
+    //  лучше вынести это в отдельный метод: ( _logger = ) makeLogger()
+
+
+    _pluginManager = new PluginManager(/*this,*/ _settings);
+
+
+
 }
 
 

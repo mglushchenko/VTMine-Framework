@@ -18,16 +18,27 @@
 namespace vtmine {
 
 // maybe add an ofstream parameter?
-Logger::Logger(const vtmine::FrameworkSettings &settings)
-{
+Logger::Logger(const vtmine::FrameworkSettings &settings)   // TODO: кодстайл
+{                    // ^ префикс не нужен
 
 }
 
 int Logger::reportEvent(const char *unitName, int eventType,
-                        const char *catName, const char *subCatName, const char *text)
+//                                              ^ LogLevel
+                        const char *catName, const char *subCatName, const char *text) // text → msg
+                        //         ^ кодстайл
+                        // unitName, catName, subCatName — все это заменить одним origin
+                        // Добавить unsigned int errorCode
+
+                        // (eventLevel, orig, msg, errorCode = 0)
+
 {
+    // TODO: скорее всего, это будет чисто-виртуальной функцией с телом, которое
+    // можно было бы вызывать из производных классов (содержащее некоторую общую
+    // функциональность)
+
     if (eventType < 0 || eventType > 3)
-        throw VTMException("Invalid event type!");
+        throw VTMException("Invalid event type!");      // TODO: уходит
 
     std::cout << eventTypes[eventType] << ". " << unitName << "says: " <<
               text << "\n";

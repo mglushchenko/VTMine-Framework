@@ -37,9 +37,14 @@ void PluginManager::loadPlugins()
 
 void PluginManager::prepareCandidatesList()
 {
-   for (std::string plugin: _pluginFileNames)
+   for (std::string plugin: _pluginFileNames) // ← для QString это замечание, возможно, будет неактуально,
+                                              // но для обычных строк используем const std::string&
    {
-       // ?: should it be a QString from the start or is this type cast OK?
+
+       // TODO: когда работаем изначально с Qt (загружаем настройки УЖЕ из
+       // окружения Qt, т.к. есть MainApplication), то решаем СРАЗУ работать c QString
+
+       // ?: should it be a QString from the start or is this type cast OK? ←←←← YES!
        QPluginLoader* curLoader = new QPluginLoader((const QString&)plugin);
        processPluginLoader(curLoader);
    }
@@ -51,7 +56,10 @@ void PluginManager::processPluginLoader(QPluginLoader* curLoader)
     if(!curPluginInstance)
     {
         QString errStr = curLoader->errorString();
-        std::cout << errStr.toStdString();
+        std::cout << errStr.toStdString();          // TODO: работаем тут с логом!
+
+        // TODO: возможно, какие-то (выработать!) настройки должны регулировать поведение в
+        // ситуации, когда отдельный файл-плагина почему-то не загружается
 
         delete curLoader;
         return;
@@ -61,7 +69,7 @@ void PluginManager::processPluginLoader(QPluginLoader* curLoader)
     if(!curPlugin)
     {
         curLoader->unload();
-        delete curLoader;
+        delete curLoader;                           // TODO: работаем с логом, и то же про настройки
         return;
     }
     _candidates.push_back(curLoader);
@@ -84,6 +92,8 @@ void PluginManager::loadCandidates()
 
             if(lr == lrExclude || lr == lrRegFailed)
             {
+                // TODO: логгировать информацию о неуспешности + причина неуспешности
+
                 (*cur)->unload();
                 delete (*cur);
 
@@ -95,6 +105,18 @@ void PluginManager::loadCandidates()
 
             if(lr == lrLoaded)
             {
+                // TODO: добавить коллекцию (vector) с указателями на загруженные
+                // плагины + имена соответств. файлов (через лоадеры?!)
+                // и каждый раз при успешной загрузке добавлять соотв. элемент
+                // в коллекцию. Ее впоследствии можно/нужно будет использовать
+                // для 1) выгрузки загруженных плагинов в порядке, обратном их
+                // загрузки (вообще, плагины нужно (написать в док!) обязать уметь
+                // выгружать максимально корректно даже в случае, когда его,
+                // плагина, зависимости уже утрачены)
+                // 2) для подготовки adviseList (топологически сортированный список
+                // зависимостей, см. параметр _allowOptimizeFileList)
+
+
                 cur = _candidates.erase(cur);
                 hasExecutions = true;
                 continue;
@@ -110,12 +132,19 @@ void PluginManager::loadCandidates()
     } while(incomplete);  // do .. while
 }
 
+// TODO: вынести для дальнейшего размышления (Glo-карточка? док?) систему
+// глобальных уведомлений плагинов о событиях фреймворка — например, что такой-то
+// плагин был уже выгружен — сделать через: систему сигналов/слотов ЛИБО, что вероятнее
+// добавить соответствующий интерфейс в сам плагин
+
+
+
 PluginManager::LoadResult PluginManager::tryLoadPlugin(QPluginLoader *curLoader)
-{
+{                                                                //  ^ TODO: везде проверить кодстайл
     QObject* curPluginInstance = curLoader->instance();
     IPlugin* curPlugin = qobject_cast<IPlugin*>(curPluginInstance);
 
-    if(checkForDuplicateID(curPlugin))
+    if(checkForDuplicateID(curPlugin))      // TODO: ругаться в логгер, м.б. здесь эксцепция, если соотв. настройки?
         return lrExclude;
 
     LoadResult lres = loadPlugin(curLoader, curPluginInstance, curPlugin);
@@ -126,12 +155,13 @@ PluginManager::LoadResult PluginManager::tryLoadPlugin(QPluginLoader *curLoader)
 PluginManager::LoadResult PluginManager::loadPlugin(QPluginLoader *loader,
                                                     QObject *instance, IPlugin *plugin)
 {
-    bool res = plugin->registerItself(_owner);
+    bool res = plugin->registerItself(_owner);  // TODO: переименовать в activate
     if (!res)
         return lrRegFailed;
 
-    std::string id = plugin->getID();
+    std::string id = plugin->getID();       // TODO: const std::string& id
     _plugins[id] = instance;
+
     return lrLoaded;
 }
 

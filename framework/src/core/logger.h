@@ -20,6 +20,17 @@
 
 // ?: how to access the logger from other framework components?
 
+
+// Разбить логгер на интерфейсную часть (модуль ilogger) и сделать одну из возможных
+// реализаций — на основе текстового файла (модуль i) через промежуточный "стримовый"
+// логгер:
+// ILogger      ←  IStreamLogger ← ITextFileLogger
+//  ^ интерфейс     ^ реализация    ^ реализация с текстовым файлов в роли стрима
+//                    со стримом      передавать в базовый класс объект файлстрим,
+//                    конструктор,    после того, как он будет готов
+//              получ объект стрима
+
+
 namespace vtmine {
 
 namespace LoggerCodes {
@@ -29,8 +40,16 @@ namespace LoggerCodes {
     const int EVTYPE_CRITICAL   = 3;          ///< Critical error event type
 }; // namespace LoggerCodes
 
+
+// TODO: переделать на это с LoggerCodes
+enum class LogLevel : unsigned char {
+
+};
+
+
+
 /***************************************************************************//**
- *  Default logger.
+ *  Default logger. ← TODO: ILogger — интерфейс
  ******************************************************************************/
 class Logger {
 public:
@@ -44,7 +63,10 @@ public:
     virtual int reportEvent(const char* unitName, int eventType,
             const char* catName, const char* subCatName, const char* text) = 0;
 
-private:
+private: // TODO: ← protected!!!!
+
+    // TODO: в комментарии обязательно указатель, что последовательность строк
+    // должна полностью relects последовательность тегов в LogLevel
     const char* eventTypes[4] = {"INFO", "WARNING", "EXCEPTION", "CRITICAL"};
 };
 

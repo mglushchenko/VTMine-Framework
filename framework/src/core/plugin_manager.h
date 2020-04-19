@@ -19,9 +19,11 @@
 #include <QPluginLoader>
 
 #include "../extlib/json.hpp"
+
+#include "framework.h"
 #include "framework_settings.h"
 #include "iplugin.h"
-#include "framework.h"
+
 
 
 namespace vtmine {
@@ -29,11 +31,12 @@ namespace vtmine {
 /***************************************************************************//**
  *  Default plugin manager.
  ******************************************************************************/
-class PluginManager {
+class PluginManager {  // TODO: public BaseUnit {
 
 public:
     typedef std::vector<QPluginLoader*> PluginLoadersList;
 
+    // TODO: заменить на enum class и можно избавиться от префиксов
     enum LoadResult {
             lrNothing,              ///< plugin was not loaded, nothing to do
             lrLoaded,               ///< plugin was loaded, delete from candidate list
@@ -44,8 +47,12 @@ public:
         }; // enum LoadResult
 
 public:
-    PluginManager(const FrameworkSettings* settings);
+    PluginManager(const FrameworkSettings* settings);   // TODO: добавить параметры для BaseUnit
     //virtual ~PluginManager() {}
+
+        // TODO: разобраться с деструктором, де-инициализировать плагины (добавить
+        // им соответствующую командочку, выгрузить объекты QObject/... из памяти
+
 
     /// Performs plugin loading.
     virtual void loadPlugins();
@@ -86,13 +93,14 @@ private:
     /// Names of plugin files to be loaded.
     std::vector<std::string> _pluginFileNames;
 
-    /// Plugin to be loaded first.
+    /// Plugin to be loaded first. ← ему будет передано управление, но совершенно не значит, что он загружен первым
     std::string _mainPluginId;
 
-    /// If true, the manager can perform a topological sort
-    /// on plugins to load them in linear time later.
+    /// If true, the manager can perform a topological sort on plugins to load
+    /// them in linear time later.
     bool _allowOptimizeFileList = true;
 
+    // Документация?
     PluginLoadersList _candidates;
     std::map<std::string, QObject*> _plugins;
 

@@ -18,10 +18,15 @@
 
 #include "framework.h"
 #include "logger.h"
-#include "plugin_manager.h"
+#include "plugin_manager.h"             // TODO: заменить forward declaration
 #include "cmd_line_params.h"
 #include "framework_settings.h"
 #include "vtmexception.h"
+
+
+
+// TODO: заменить forward declaration
+class PluginManager;
 
 
 namespace vtmine {
