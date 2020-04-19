@@ -21,6 +21,7 @@
 #include "plugin_manager.h"
 #include "cmd_line_params.h"
 #include "framework_settings.h"
+#include "vtmexception.h"
 
 
 namespace vtmine {
@@ -34,12 +35,12 @@ public:
     FrameworkDefImpl(){}
 
     /// Virtual destructor.
-    virtual ~FrameworkDefImpl(); //{}
+    virtual ~FrameworkDefImpl();
 
     /** \brief Initializes the framework with user-specified parameters.
      * \param params -- configuration parameters parsed from command line.
      */
-    virtual void init(CmdLineParams& params);
+    virtual void init(const CmdLineParams& params);
 
     // IFramework implementations
     /** @brief Virtual getter for logger.
@@ -55,10 +56,10 @@ public:
 
 protected:
     /// \brief Settings obtained from configuration parameters.
-    FrameworkSettings* _settings;
+    FrameworkSettings* _settings = nullptr;
 
-//    Logger* _logger;
-    PluginManager* _pluginManager;
+    Logger* _logger = nullptr;
+    PluginManager* _pluginManager = nullptr;
 }; // class FrameworkDefImpl
 
 } // namespace vtmine

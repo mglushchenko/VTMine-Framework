@@ -13,9 +13,6 @@
 
 namespace vtmine {
 
-
-// TODO: сделать конструктор для фреймворка
-
 FrameworkDefImpl::~FrameworkDefImpl()
 {
     delete _settings;
@@ -23,26 +20,16 @@ FrameworkDefImpl::~FrameworkDefImpl()
 }
 
 
-// Важный компонентный вопрос: в каких случаях инициализация фреймворка м.б.
-// разнесена с его конструированием?
-void FrameworkDefImpl::init(CmdLineParams& params)
+void FrameworkDefImpl::init(const CmdLineParams& params)
 { 
-    // 1) вычитываем настройки из заданного конфига — важно
-    _settings = new FrameworkSettings(params.getConfigFileName());    
+    _settings = new FrameworkSettings(params.getConfigFileName());
 
-    // 2) Логгер — подготовить, открыть, начать дальше все сообщения писать в него
-    //_logger = new DefLoggerImpl(_settings); // ← логгер, как и все компоненты, сам вытащит нужные ему настройки
-
-
-    // 3) Менеджер плагинов
-    _pluginManager = new PluginManager();
-    //pluginManager = new PluginManager(_settings); // ← ПМ, как и все компоненты, сам вытащит нужные ему настройки
-
-
-    // TODO: убрать в соотв. компоненты
     nlohmann::json pluginsConfig;
-    if (_settings->parseConfigJSON(pluginsConfig))
-        _pluginManager->parsePluginsConfig(pluginsConfig);
+    if (!_settings->parseConfigJSON(pluginsConfig))
+        throw VTMException("Invalid configuration file");
+
+    _pluginManager = new PluginManager(_settings);
+    // TODO: initialize logger
 }
 
 

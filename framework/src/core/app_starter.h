@@ -36,11 +36,10 @@ public:
     {
     }
 
-    // TODO: деструктор
-    //~AppStarter()
-
-    AppStarter(const AppStarter& other) = delete;
-    // TODO: т.д. для operator =
+    ~AppStarter()
+    {
+        delete _frmw;
+    }
 
     /** \brief Last-resort exception handling.
      *  \param argc -- number of cmd arguments.
@@ -55,9 +54,6 @@ public:
     int main(int argc, char *argv[]);
 
 protected:
-
-
-
     /** \brief Factory method for a framework instance. Initializes _frmw field.
      *  \param argc -- number of cmd arguments.
      *  \param argv -- cmd arguments.

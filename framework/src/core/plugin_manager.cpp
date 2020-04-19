@@ -9,53 +9,136 @@
  ******************************************************************************/
 
 
+#include <iostream>
+
 #include "plugin_manager.h"
+#include "vtmexception.h"
 
 
 namespace vtmine {
 
-void PluginManager::parsePluginsConfig(nlohmann::json pluginsConfig)
+PluginManager::PluginManager(const FrameworkSettings* settings)
 {
+    _pluginFileNames = settings->getPluginFileNames();
+    _mainPluginId = settings->getMainPluginId();
+    _allowOptimizeFileList = settings->getAllowOptimize();
+}
 
-    // TODO: Обработку случаев, когда соотв. ключей нет
+void PluginManager::loadPlugins()
+{
+    if(_alreadyLoaded)
+        throw VTMException("Plugins already loaded!");
 
-    // Нужен доп. слой абстракции между конкретным компонентом представления
-    // настроек и собственного самими (высокоуровневыми) настройками:
-    //      pluginsConfig["pluginBaseDir"].get<std::string>() — плохо
-    //      getPluginBaseDir() ← метод, который сам знает, откуда взять настройки
-    //
-    //  std::string getPluginBaseDir() const { pluginsConfig["pluginBaseDir"].get<std::string>() + проверка, что строка не пустая...}
+    prepareCandidatesList();
+    loadCandidates();
 
-    //      pluginsConfig["pluginBaseDir"] ← плохо
-    //      pluginsConfig[SET_PLUGIN_BASE_DIR] ← лучше, где
-    //      const char* SET_PLUGIN_BASE_DIR = "pluginBaseDir";
+    _alreadyLoaded = true;
+}
 
+void PluginManager::prepareCandidatesList()
+{
+   for (std::string plugin: _pluginFileNames)
+   {
+       // ?: should it be a QString from the start or is this type cast OK?
+       QPluginLoader* curLoader = new QPluginLoader((const QString&)plugin);
+       processPluginLoader(curLoader);
+   }
+}
 
-    std::string base_dir = pluginsConfig["pluginBaseDir"].get<std::string>();
-    _pluginFileNames = pluginsConfig["pluginFileNames"].
-            get<std::vector<std::string>>();
-    for (size_t i = 0; i < _pluginFileNames.size(); ++i)
+void PluginManager::processPluginLoader(QPluginLoader* curLoader)
+{
+    QObject* curPluginInstance = curLoader->instance();
+    if(!curPluginInstance)
     {
-        std::string& curPluginName = _pluginFileNames[i];
+        QString errStr = curLoader->errorString();
+        std::cout << errStr.toStdString();
 
-        if(curPluginName.empty())       // если пустое имя файла, как мы реагируем?
-            ;                           // скорее всего, в лог нужно кинуть сообщения уровня WARN и двигать дальше
-
-        // уровни сообщений в лог: CRIT, WARN, INFO, VERB
-
-        if (_pluginFileNames[i][0] == '?')
-            _pluginFileNames[i] = base_dir + _pluginFileNames[i];
+        delete curLoader;
+        return;
     }
 
-    _mainPluginId = pluginsConfig["mainPlugin"].get<std::string>();
+    IPlugin* curPlugin = qobject_cast<IPlugin*>(curPluginInstance);
+    if(!curPlugin)
+    {
+        curLoader->unload();
+        delete curLoader;
+        return;
+    }
+    _candidates.push_back(curLoader);
+}
 
-    if (pluginsConfig["allowOptimizeFileList"] != nullptr &&
-            !pluginsConfig["allowOptimizeFileList"].get<bool>())
-        _allowOptimizeFileList = false;
-        // TODO: ^^^ getter к нему
+void PluginManager::loadCandidates()
+{
+    // _plugins
+    bool incomplete;                /// флаг, указывающий на то, что хотя бы один плагин за полный оборот не был загружен
+    bool hasExecutions;             /// флаг, указывающий на то, что хотя бы один плагин за полный оборот был выполнен
 
-    // TODO: parsing settings for each plugin and topological sorting
-    //?: how are dependencies between plugins speicifed in config?
+    do {
+        incomplete = false;
+        hasExecutions = false;
+
+        PluginLoadersList::iterator cur = _candidates.begin();
+        while(cur != _candidates.end())
+        {
+            LoadResult lr = tryLoadPlugin(*cur);
+
+            if(lr == lrExclude || lr == lrRegFailed)
+            {
+                (*cur)->unload();
+                delete (*cur);
+
+                cur = _candidates.erase(cur);
+
+                hasExecutions = true;
+                continue;
+            }
+
+            if(lr == lrLoaded)
+            {
+                cur = _candidates.erase(cur);
+                hasExecutions = true;
+                continue;
+            }
+
+            ++cur;
+
+        } // while
+
+        incomplete = !_candidates.empty();
+        if(!hasExecutions && incomplete)
+            break;
+    } while(incomplete);  // do .. while
+}
+
+PluginManager::LoadResult PluginManager::tryLoadPlugin(QPluginLoader *curLoader)
+{
+    QObject* curPluginInstance = curLoader->instance();
+    IPlugin* curPlugin = qobject_cast<IPlugin*>(curPluginInstance);
+
+    if(checkForDuplicateID(curPlugin))
+        return lrExclude;
+
+    LoadResult lres = loadPlugin(curLoader, curPluginInstance, curPlugin);
+
+    return lres;
+}
+
+PluginManager::LoadResult PluginManager::loadPlugin(QPluginLoader *loader,
+                                                    QObject *instance, IPlugin *plugin)
+{
+    bool res = plugin->registerItself(_owner);
+    if (!res)
+        return lrRegFailed;
+
+    std::string id = plugin->getID();
+    _plugins[id] = instance;
+    return lrLoaded;
+}
+
+bool PluginManager::checkForDuplicateID(IPlugin* plugin)
+{
+    std::string id = plugin->getID();
+    return _plugins.find(id) != _plugins.end();
 }
 
 } // namespace vtmine

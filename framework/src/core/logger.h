@@ -16,16 +16,36 @@
 #define VTMINE_FRAMEWORK_CORE_LOGGER_H_
 
 
+#include "framework_settings.h"
+
+// ?: how to access the logger from other framework components?
+
 namespace vtmine {
+
+namespace LoggerCodes {
+    const int EVTYPE_INFO       = 0;          ///< Default event type
+    const int EVTYPE_WARNING    = 1;          ///< Warning event type
+    const int EVTYPE_EXCEPTION  = 2;          ///< Exception event type
+    const int EVTYPE_CRITICAL   = 3;          ///< Critical error event type
+}; // namespace LoggerCodes
 
 /***************************************************************************//**
  *  Default logger.
  ******************************************************************************/
 class Logger {
 public:
+    Logger(const FrameworkSettings& settings);
     virtual ~Logger() {}
-    virtual void open();
-    virtual void close();
+    virtual void open() = 0;
+    virtual void close() = 0;
+    virtual bool isReady() = 0;
+
+    // ?: what do parameters catName and subCatName represent?
+    virtual int reportEvent(const char* unitName, int eventType,
+            const char* catName, const char* subCatName, const char* text) = 0;
+
+private:
+    const char* eventTypes[4] = {"INFO", "WARNING", "EXCEPTION", "CRITICAL"};
 };
 
 } // namespace vtmine
