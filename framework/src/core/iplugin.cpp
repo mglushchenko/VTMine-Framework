@@ -23,7 +23,7 @@ IPlugin::IPlugin()
 
 }
 
-bool IPlugin::activate(const IFramework *frmw) const
+bool IPlugin::activate(const IFramework* frmw) const
 {
     // TODO: add actual logic
     return true;

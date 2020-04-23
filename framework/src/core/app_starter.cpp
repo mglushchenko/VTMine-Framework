@@ -15,14 +15,14 @@
 namespace vtmine {
 
 
-int AppStarter::main(int argc, char *argv[])
+int AppStarter::main(int argc, char* argv[])
 {
     makeDefFramework(argc, argv);
     return 0;
 }
 
 
-int AppStarter::run(int argc, char *argv[])
+int AppStarter::run(int argc, char* argv[])
 {
     int res = -1;
 

@@ -47,12 +47,12 @@ public:
      *  \param argv -- cmd arguments.
      *  \return Error code (0 in case of success).
      */
-    int run(int argc, char *argv[]);
+    int run(int argc, char* argv[]);
 
     /** \brief Main app starter.
      *  Params and the return value are the same as in run().
      */
-    int main(int argc, char *argv[]);
+    int main(int argc, char* argv[]);
 
 protected:
     /** \brief Factory method for a framework instance. Initializes _frmw field.
