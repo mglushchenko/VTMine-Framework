@@ -17,22 +17,11 @@
 
 namespace vtmine {
 
-// maybe add an ofstream parameter?
-Logger::Logger(const vtmine::FrameworkSettings &settings)
+ILogger::ILogger(const FrameworkSettings* settings)
 {
-
-}
-
-int Logger::reportEvent(const char *unitName, int eventType,
-                        const char *catName, const char *subCatName, const char *text)
-{
-    if (eventType < 0 || eventType > 3)
-        throw VTMException("Invalid event type!");
-
-    std::cout << eventTypes[eventType] << ". " << unitName << "says: " <<
-              text << "\n";
-    // do we simply keep an event counter and return its value here?
-    return 0;
+    for (int i = 0; i < 4; ++i)
+        if (settings->getOutputLevel() == eventTypes[i])
+            _outputLvl = i;
 }
 
 } // namespace vtmine

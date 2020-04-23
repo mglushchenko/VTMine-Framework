@@ -36,6 +36,7 @@ public:
     {
     }
 
+    /// Class destructor.
     ~AppStarter()
     {
         delete _frmw;

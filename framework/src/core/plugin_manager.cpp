@@ -11,23 +11,36 @@
 
 #include <iostream>
 
+#include "framework_def_impl.h"
 #include "plugin_manager.h"
 #include "vtmexception.h"
 
 
 namespace vtmine {
 
-PluginManager::PluginManager(const FrameworkSettings* settings)
+PluginManager::PluginManager(const IFramework* owner):
+    BaseUnit(owner)
 {
+     FrameworkSettings* settings = ((FrameworkDefImpl*)owner)->getSettings();
     _pluginFileNames = settings->getPluginFileNames();
     _mainPluginId = settings->getMainPluginId();
     _allowOptimizeFileList = settings->getAllowOptimize();
+
+    _unitName = "Plugin manager";
+}
+
+PluginManager::~PluginManager()
+{
+    unloadPlugins();
 }
 
 void PluginManager::loadPlugins()
 {
     if(_alreadyLoaded)
+    {
+        logError("Plugins already loaded!");
         throw VTMException("Plugins already loaded!");
+    }
 
     prepareCandidatesList();
     loadCandidates();
@@ -35,12 +48,22 @@ void PluginManager::loadPlugins()
     _alreadyLoaded = true;
 }
 
+void PluginManager::unloadPlugins()
+{
+    for (std::pair<std::string, QObject*> curr: _plugins)
+    {
+        if (!((IPlugin*)curr.second)->deactivate())
+        {
+            logError(("Failed to deactivate plugin " + curr.first + ".").c_str());
+        }
+    }
+}
+
 void PluginManager::prepareCandidatesList()
 {
-   for (std::string plugin: _pluginFileNames)
+   for (const QString& plugin: _pluginFileNames)
    {
-       // ?: should it be a QString from the start or is this type cast OK?
-       QPluginLoader* curLoader = new QPluginLoader((const QString&)plugin);
+       QPluginLoader* curLoader = new QPluginLoader(plugin);
        processPluginLoader(curLoader);
    }
 }
@@ -51,7 +74,7 @@ void PluginManager::processPluginLoader(QPluginLoader* curLoader)
     if(!curPluginInstance)
     {
         QString errStr = curLoader->errorString();
-        std::cout << errStr.toStdString();
+        logError("Not a QT plugin!");
 
         delete curLoader;
         return;
@@ -82,10 +105,12 @@ void PluginManager::loadCandidates()
         {
             LoadResult lr = tryLoadPlugin(*cur);
 
-            if(lr == lrExclude || lr == lrRegFailed)
+            if(lr == LoadResult::exclude || lr == LoadResult::regFailed)
             {
                 (*cur)->unload();
                 delete (*cur);
+
+                logError("Failed to load plugin!");
 
                 cur = _candidates.erase(cur);
 
@@ -93,7 +118,7 @@ void PluginManager::loadCandidates()
                 continue;
             }
 
-            if(lr == lrLoaded)
+            if(lr == LoadResult::loaded)
             {
                 cur = _candidates.erase(cur);
                 hasExecutions = true;
@@ -116,7 +141,11 @@ PluginManager::LoadResult PluginManager::tryLoadPlugin(QPluginLoader *curLoader)
     IPlugin* curPlugin = qobject_cast<IPlugin*>(curPluginInstance);
 
     if(checkForDuplicateID(curPlugin))
-        return lrExclude;
+    {
+        logError("Plugin with this ID has already been loaded!");
+
+        return LoadResult::exclude;
+    }
 
     LoadResult lres = loadPlugin(curLoader, curPluginInstance, curPlugin);
 
@@ -126,18 +155,18 @@ PluginManager::LoadResult PluginManager::tryLoadPlugin(QPluginLoader *curLoader)
 PluginManager::LoadResult PluginManager::loadPlugin(QPluginLoader *loader,
                                                     QObject *instance, IPlugin *plugin)
 {
-    bool res = plugin->registerItself(_owner);
+    bool res = plugin->activate(_owner);
     if (!res)
-        return lrRegFailed;
+        return LoadResult::regFailed;
 
-    std::string id = plugin->getID();
+    const std::string& id = plugin->getID().toStdString();
     _plugins[id] = instance;
-    return lrLoaded;
+    return LoadResult::loaded;
 }
 
 bool PluginManager::checkForDuplicateID(IPlugin* plugin)
 {
-    std::string id = plugin->getID();
+    const std::string& id = plugin->getID().toStdString();
     return _plugins.find(id) != _plugins.end();
 }
 

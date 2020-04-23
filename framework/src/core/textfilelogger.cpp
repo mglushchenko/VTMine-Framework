@@ -9,32 +9,16 @@
  ******************************************************************************/
 
 
-#include <QApplication>
-#include <QWidget>
-#include <QPushButton>
-
-#include "iplugin.h"
+#include "textfilelogger.h"
+#include "vtmexception.h"
 
 
 namespace vtmine {
 
-IPlugin::IPlugin()
+ITextFileLogger::ITextFileLogger(const FrameworkSettings* settings):
+    IStreamLogger(settings)
 {
-
+    _logFileName = settings->getLogFileName();
 }
-
-bool IPlugin::activate(const IFramework *frmw) const
-{
-    // TODO: add actual logic
-    return true;
-}
-
-bool IPlugin::deactivate()
-{
-    return true;
-}
-
 
 } // namespace vtmine
-
-

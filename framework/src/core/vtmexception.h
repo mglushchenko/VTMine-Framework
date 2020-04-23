@@ -1,6 +1,6 @@
 /***************************************************************************//**
  *  \file
- *  \brief     VTMine Framework application starter.
+ *  \brief     VTMine Framework exception class.
  *  \author    Sergey Shershakov, Maria Gluschenko
  *  \version   0.1.0
  *  \date      19.02.2020
@@ -28,7 +28,7 @@ namespace vtmine {
 class VTMException: public std::exception {
 public:
     /** \brief Exception constructor.
-     * \param message -- error message.
+     *  \param message -- error message.
      */
     VTMException(const std::string& message)
                 : errorMessage(message)
@@ -36,14 +36,14 @@ public:
     }
 
     /** \brief Describes the exception.
-     * \return Error message.
+     *  \return Error message.
      */
     const char* what() const throw ()
     {
         return errorMessage.c_str();
     }
 
-private:
+protected:
     /// Error description.
     std::string errorMessage;
 

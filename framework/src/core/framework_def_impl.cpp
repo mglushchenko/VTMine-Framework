@@ -9,14 +9,16 @@
  ******************************************************************************/
 
 #include "framework_def_impl.h"
+#include "textfilelogger.h"
 #include "../extlib/json.hpp"
 
 namespace vtmine {
 
 FrameworkDefImpl::~FrameworkDefImpl()
 {
-    delete _settings;
     delete _pluginManager;
+    delete _logger;
+    delete _settings; 
 }
 
 
@@ -24,12 +26,24 @@ void FrameworkDefImpl::init(const CmdLineParams& params)
 { 
     _settings = new FrameworkSettings(params.getConfigFileName());
 
-    nlohmann::json pluginsConfig;
-    if (!_settings->parseConfigJSON(pluginsConfig))
+    if (!_settings->parseConfigJSON())
         throw VTMException("Invalid configuration file");
 
-    _pluginManager = new PluginManager(_settings);
-    // TODO: initialize logger
+    _pluginManager = new PluginManager(this);
+    _logger = makeLogger();
+}
+
+ILogger* FrameworkDefImpl::makeLogger()
+{
+    std::string outputLevel = _settings->getOutputLevel();
+    if (_settings->getLoggerType() == "textFile")
+    {
+        std::string logFile = _settings->getLogFileName();
+        return new ITextFileLogger(_settings);
+    }
+
+    // default output stream is std::cout
+    return new IStreamLogger(_settings);
 }
 
 

@@ -1,6 +1,6 @@
 /***************************************************************************//**
  *  \file
- *  \brief     VTMine Framework application starter.
+ *  \brief     VTMine Framework base interface.
  *  \author    Sergey Shershakov, Maria Gluschenko
  *  \version   0.1.0
  *  \date      19.02.2020

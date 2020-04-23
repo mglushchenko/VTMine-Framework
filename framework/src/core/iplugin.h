@@ -1,6 +1,6 @@
 /***************************************************************************//**
  *  \file
- *  \brief     VTMine Framework application starter.
+ *  \brief     VTMine Framework plugin interface.
  *  \author    Sergey Shershakov, Maria Gluschenko
  *  \version   0.1.0
  *  \date      09.04.2020
@@ -8,7 +8,7 @@
  *             This source is for internal use only — Restricted Distribution.
  *             All rights reserved.
  *
- *  Framework settings.
+ *  Plugin interface.
  *
  ******************************************************************************/
 
@@ -33,13 +33,29 @@ public:
     /// Default constructor.
     IPlugin();
 
-    bool registerItself(IFramework* frmw);
+    /**
+     * \brief Activates plugin.
+     * \param frmw -- owner framework object.
+     * \return True in case of success.
+     */
+    bool activate(const IFramework* frmw) const;
+
+    /**
+     * \brief Deactivates plugin.
+     * \return True in case of success.
+     */
+    bool deactivate();
 
     /// ID Getter.
-    std::string getID() const { return _id; }
-private:
+    QString getID() const { return _id; }
+
+
+    /// Plugin states.
+    enum class State { loaded, active };
+
+protected:
     /// Plugin's unique ID.
-    std::string _id;
+    QString _id;
 };
 
 } // namespace vtmine

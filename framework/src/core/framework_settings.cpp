@@ -19,13 +19,13 @@
 namespace vtmine {
 
 
-FrameworkSettings::FrameworkSettings(std::string configFileName)
+FrameworkSettings::FrameworkSettings(const std::string& configFileName)
 {
     _configFileName = configFileName;
 }
 
 
-bool FrameworkSettings::parseConfigJSON(nlohmann::json& pluginsConfig)
+bool FrameworkSettings::parseConfigJSON()
 {
     std::ifstream configFile(_configFileName);
     if (!configFile)
@@ -37,26 +37,38 @@ bool FrameworkSettings::parseConfigJSON(nlohmann::json& pluginsConfig)
     configFile >> configJSON;
     configFile.close();
 
+    // plugin configuration parsing
     if (configJSON.find(pluginsConfiguration) == configJSON.end())
     {
         throw VTMException("No plugins configuration provided.");
     }
-    pluginsConfig = configJSON[pluginsConfiguration];
+    nlohmann::json pluginsConfig = configJSON[pluginsConfiguration];
     std::string baseDir = getPluginsBaseDir(pluginsConfig);
     _pluginFileNames = getPluginFileNames(pluginsConfig);
     for (size_t i = 0; i < _pluginFileNames.size(); ++i)
     {
-        if (!_pluginFileNames[i].empty() && _pluginFileNames[i][0] == '?')
-            _pluginFileNames[i] = baseDir + _pluginFileNames[i];
+        if (!_pluginFileNames[i].isEmpty() && _pluginFileNames[i][0] == '?')
+            _pluginFileNames[i] = (QString&)baseDir + _pluginFileNames[i];
     }
 
     _mainPluginId = getMainPluginId(pluginsConfig);
     _allowOptimizeFileList = getAllowOptimize(pluginsConfig);
 
+    // logger configuration parsing
+    if (configJSON.find(loggerConfiguration) == configJSON.end())
+    {
+        throw VTMException("No logger configuration provided.");
+    }
+    nlohmann::json loggerConfig = configJSON[loggerConfiguration];
+    _outputType = getOutputType(loggerConfig);
+    if (_outputType == "textFile")
+        _fileName = getFileName(loggerConfig);
+    _minOutputLevel = getOutputLevel(loggerConfig);
+
     return true;
 }
 
-std::string FrameworkSettings::getPluginsBaseDir(nlohmann::json config)
+std::string FrameworkSettings::getPluginsBaseDir(const nlohmann::json& config)
 {
     if (config.find(pluginBaseDir) == config.end())
     {
@@ -68,18 +80,24 @@ std::string FrameworkSettings::getPluginsBaseDir(nlohmann::json config)
     return config[pluginBaseDir].get<std::string>();
 }
 
-std::vector<std::string> FrameworkSettings::getPluginFileNames(nlohmann::json config)
+std::vector<QString> FrameworkSettings::getPluginFileNames(const nlohmann::json& config)
 {
     if (config.find(pluginFileNames) == config.end())
     {
         std::cout << "No plugins passed\n";
-        return std::vector<std::string>();
+        return std::vector<QString>();
     }
 
-    return config[pluginFileNames].get<std::vector<std::string>>();
+    std::vector<std::string> tmp = config[pluginFileNames].
+            get<std::vector<std::string>>();
+
+    std::vector<QString> res;
+    for (std::string str: tmp)
+        res.push_back(QString::fromStdString(str));
+    return res;
 }
 
-std::string FrameworkSettings::getMainPluginId(nlohmann::json config)
+std::string FrameworkSettings::getMainPluginId(const nlohmann::json& config)
 {
     if (config.find(mainPlugin) == config.end())
     {
@@ -90,13 +108,37 @@ std::string FrameworkSettings::getMainPluginId(nlohmann::json config)
     return config[mainPlugin].get<std::string>();
 }
 
-bool FrameworkSettings::getAllowOptimize(nlohmann::json config)
+bool FrameworkSettings::getAllowOptimize(const nlohmann::json& config)
 {
     // no logging because it's a normal situation
     if (config.find(allowOptimize) == config.end())
         return true;
 
     return config[allowOptimize].get<bool>();
+}
+
+std::string FrameworkSettings::getOutputType(const nlohmann::json& config)
+{
+    if (config.find(outputType) == config.end())
+        throw VTMException("Logger type not specified");
+
+    return config[outputType];
+}
+
+std::string FrameworkSettings::getFileName(const nlohmann::json& config)
+{
+    if (config.find(fileName) == config.end())
+        throw VTMException("Logger type is text file, yet "
+                           "no output file was specified");
+    return config[fileName];
+}
+
+std::string FrameworkSettings::getOutputLevel(const nlohmann::json& config)
+{
+    if (config.find(minOutputLevel) == config.end())
+        return "INFO";
+
+    return config[minOutputLevel];
 }
 
 } // namespace vtmine
