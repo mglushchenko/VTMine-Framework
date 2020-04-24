@@ -31,20 +31,22 @@ class IPlugin
 {
 public:
     /// Default constructor.
-    IPlugin();
+    //IPlugin();
+
+    virtual ~IPlugin() {}
 
     /**
      * \brief Activates plugin.
      * \param frmw -- owner framework object.
      * \return True in case of success.
      */
-    bool activate(const IFramework* frmw) const;
+    virtual bool activate(const IFramework* frmw) const = 0;
 
     /**
      * \brief Deactivates plugin.
      * \return True in case of success.
      */
-    bool deactivate();
+    virtual bool deactivate() = 0;
 
     /// ID Getter.
     QString getID() const { return _id; }

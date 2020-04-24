@@ -27,8 +27,6 @@
 
 namespace vtmine {
 
-//class PluginManager;
-
 /***************************************************************************//**
  *  Default framework implementation.
  ******************************************************************************/
@@ -76,6 +74,7 @@ protected:
 protected:
     /// Helper method to initialize logger with desired configuration.
     ILogger* makeLogger();
+
 }; // class FrameworkDefImpl
 
 } // namespace vtmine

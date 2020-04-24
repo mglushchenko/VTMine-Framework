@@ -1,0 +1,4 @@
+C:/develop/projects/cpp/vtm_framework_new/framework/plugins/build-TestPlugin-main_kit-Debug/CMakeFiles/TestPlugin.dir
+C:/develop/projects/cpp/vtm_framework_new/framework/plugins/build-TestPlugin-main_kit-Debug/CMakeFiles/edit_cache.dir
+C:/develop/projects/cpp/vtm_framework_new/framework/plugins/build-TestPlugin-main_kit-Debug/CMakeFiles/rebuild_cache.dir
+C:/develop/projects/cpp/vtm_framework_new/framework/plugins/build-TestPlugin-main_kit-Debug/CMakeFiles/TestPlugin_autogen.dir

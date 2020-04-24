@@ -47,8 +47,9 @@ bool FrameworkSettings::parseConfigJSON()
     _pluginFileNames = getPluginFileNames(pluginsConfig);
     for (size_t i = 0; i < _pluginFileNames.size(); ++i)
     {
-        if (!_pluginFileNames[i].isEmpty() && _pluginFileNames[i][0] == '?')
-            _pluginFileNames[i] = (QString&)baseDir + _pluginFileNames[i];
+//        if (!_pluginFileNames[i].isEmpty() && _pluginFileNames[i][0] == '?')
+//            _pluginFileNames[i] = QString::fromStdString(baseDir) +
+//                    _pluginFileNames[i].right(_pluginFileNames[i].length() - 1);
     }
 
     _mainPluginId = getMainPluginId(pluginsConfig);
@@ -77,7 +78,10 @@ std::string FrameworkSettings::getPluginsBaseDir(const nlohmann::json& config)
         return "";
     }
 
-    return config[pluginBaseDir].get<std::string>();
+    std::string baseDir = config[pluginBaseDir].get<std::string>();
+    _basepluginsDir = QDir(QString::fromStdString(baseDir));
+
+    return baseDir;
 }
 
 std::vector<QString> FrameworkSettings::getPluginFileNames(const nlohmann::json& config)

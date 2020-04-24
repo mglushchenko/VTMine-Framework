@@ -1,0 +1,3 @@
+C:\programs\CMake\bin\cmake.exe -E remove -f CMakeFiles\TestPlugin.dir/objects.a
+C:\Qt\Tools\mingw730_32\bin\ar.exe cr CMakeFiles\TestPlugin.dir/objects.a @CMakeFiles\TestPlugin.dir\objects1.rsp
+C:\Qt\Tools\mingw730_32\bin\g++.exe  -g  -shared -o libTestPlugin.dll -Wl,--out-implib,libTestPlugin.dll.a -Wl,--major-image-version,0,--minor-image-version,0 -Wl,--whole-archive CMakeFiles\TestPlugin.dir/objects.a -Wl,--no-whole-archive @CMakeFiles\TestPlugin.dir\linklibs.rsp

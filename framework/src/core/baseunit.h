@@ -29,9 +29,10 @@ public:
      * \brief Class constructor.
      * \param frmv -- Framework object to which the unit belongs.
      */
-    BaseUnit(const IFramework* frmv)
+    BaseUnit(const IFramework* frmv, ILogger* logger)
     {
         _owner = frmv;
+        _logger = logger;
     }
 
     /// Class destructor.

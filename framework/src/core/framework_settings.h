@@ -20,6 +20,7 @@
 #include <string>
 #include <vector>
 #include <QString>
+#include <QDir>
 
 #include "../extlib/json.hpp"
 
@@ -53,6 +54,9 @@ public:
         return _pluginFileNames;
     }
 
+    /// Getter for plugins base directory.
+    QDir getPluginsBaseDir() const { return _basepluginsDir; }
+
     /// Getter for main plugin ID.
     std::string getMainPluginId() const { return _mainPluginId; }
 
@@ -80,6 +84,9 @@ protected:
 
     /// Plugin files.
     std::vector<std::string> _plugins;
+
+    /// Base plugins directory.
+    QDir _basepluginsDir;
 
     /// Names of plugin files to be loaded.
     std::vector<QString> _pluginFileNames;

@@ -52,7 +52,7 @@ public:
      * \brief Adds a message to the log.
      * \param unitName -- message source.
      * \param eventType -- event type (info, warning, etc.)
-     * @param text -- message contents.
+     * \param text -- message contents.
      * \return Event ID.
      */
     virtual int reportEvent(const char* unitName, const char* text,

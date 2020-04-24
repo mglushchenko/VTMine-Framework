@@ -29,8 +29,14 @@ void FrameworkDefImpl::init(const CmdLineParams& params)
     if (!_settings->parseConfigJSON())
         throw VTMException("Invalid configuration file");
 
-    _pluginManager = new PluginManager(this);
     _logger = makeLogger();
+
+    _pluginManager = new PluginManager(this, _logger);
+    _pluginManager->loadPlugins();
+
+    std::string mainPluginID = _pluginManager->getMainPluginID();
+    IPlugin* mainPlugin = (IPlugin*)_pluginManager->getPlugins()[mainPluginID];
+    mainPlugin->activate(this);
 }
 
 ILogger* FrameworkDefImpl::makeLogger()

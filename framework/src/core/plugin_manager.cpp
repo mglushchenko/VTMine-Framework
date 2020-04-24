@@ -10,6 +10,7 @@
 
 
 #include <iostream>
+#include <QDir>
 
 #include "framework_def_impl.h"
 #include "plugin_manager.h"
@@ -18,8 +19,8 @@
 
 namespace vtmine {
 
-PluginManager::PluginManager(const IFramework* owner):
-    BaseUnit(owner)
+PluginManager::PluginManager(const IFramework* owner, ILogger* logger):
+    BaseUnit(owner, logger)
 {
      FrameworkSettings* settings = ((FrameworkDefImpl*)owner)->getSettings();
     _pluginFileNames = settings->getPluginFileNames();
@@ -27,6 +28,8 @@ PluginManager::PluginManager(const IFramework* owner):
     _allowOptimizeFileList = settings->getAllowOptimize();
 
     _unitName = "Plugin manager";
+
+    _basePluginsDir = settings->getPluginsBaseDir();
 }
 
 PluginManager::~PluginManager()
@@ -63,7 +66,7 @@ void PluginManager::prepareCandidatesList()
 {
    for (const QString& plugin: _pluginFileNames)
    {
-       QPluginLoader* curLoader = new QPluginLoader(plugin);
+       QPluginLoader* curLoader = new QPluginLoader(_basePluginsDir.absoluteFilePath(plugin));
        processPluginLoader(curLoader);
    }
 }
@@ -74,7 +77,7 @@ void PluginManager::processPluginLoader(QPluginLoader* curLoader)
     if(!curPluginInstance)
     {
         QString errStr = curLoader->errorString();
-        logError("Not a QT plugin!");
+        logError(errStr.toStdString().c_str());
 
         delete curLoader;
         return;

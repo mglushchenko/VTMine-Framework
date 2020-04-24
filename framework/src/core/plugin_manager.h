@@ -23,11 +23,12 @@
 
 #include "framework_settings.h"
 #include "iplugin.h"
-#include "framework.h"
 #include "baseunit.h"
 
 
 namespace vtmine {
+
+class BaseUnit;
 
 /***************************************************************************//**
  *  Plugin manager.
@@ -43,7 +44,7 @@ public:
 
 public:
     /// Class constructor.
-    PluginManager(const IFramework* owner);
+    PluginManager(const IFramework* owner, ILogger* logger);
 
     /// Class destructor.
     ~PluginManager();
@@ -53,6 +54,12 @@ public:
 
     /// Performs plugin unloading.
     void unloadPlugins();
+
+    /// Main plugin ID getter.
+    std::string getMainPluginID() const { return _mainPluginId; }
+
+    /// Plugins map getter.
+    std::unordered_map<std::string, QObject*> getPlugins() const { return _plugins; }
 
 protected:
     /// Prepares plugins for loading.
@@ -103,8 +110,10 @@ protected:
     /// Map of plugins and their IDs.
     std::unordered_map<std::string, QObject*> _plugins;
 
+    QDir _basePluginsDir;
+
     /// Flag indicating whether the plugins have already been loaded.
-    bool _alreadyLoaded;
+    bool _alreadyLoaded = false;
 };
 
 } // namespace vtmine
