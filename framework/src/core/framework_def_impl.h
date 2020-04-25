@@ -47,7 +47,7 @@ public:
     /** \brief Virtual getter for logger.
      *  \return An instance of Logger.
      */
-    virtual ILogger* getLogger() const {return nullptr;}
+    virtual ILogger* getLogger() const { return _logger; }
 
     /** \brief Virtual getter for plugin manager.
      *  \return An instance of PluginManager.

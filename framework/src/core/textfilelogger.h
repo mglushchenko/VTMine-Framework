@@ -18,6 +18,8 @@
 
 
 #include <string>
+#include <iostream>
+#include <fstream>
 
 #include "streamlogger.h"
 
@@ -34,7 +36,10 @@ public:
     ITextFileLogger(const FrameworkSettings* settings);
 
     /// Opens log file.
-    void open() override { _out->open(_logFileName); }
+    void open() override
+    {
+        _out = new std::ofstream(_logFileName);
+    }
 
 protected:
     /// Log file name.

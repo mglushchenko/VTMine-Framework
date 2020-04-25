@@ -33,10 +33,13 @@ public:
     {
         _owner = frmv;
         _logger = logger;
+        _logger->open();
     }
 
     /// Class destructor.
-    ~BaseUnit() {}
+    ~BaseUnit() {
+        _logger->close();
+    }
 
     /// Getter for owner framework object.
     const IFramework* getOwner() const { return _owner; }
