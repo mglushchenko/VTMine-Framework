@@ -26,7 +26,7 @@
 
 namespace vtmine {
 
-class ITextFileLogger: public IStreamLogger
+class ITextFileLogger: public IStreamLogger     // TODO: ITextFileLogger → TextFileLogger
 {
 public:
     /**
@@ -35,8 +35,10 @@ public:
      */
     ITextFileLogger(const FrameworkSettings* settings);
 
+    // TODO: деструктор, и он же удаляет _out (RAII)
+
     /// Opens log file.
-    void open() override
+    virtual void open() override
     {
         _out = new std::ofstream(_logFileName);
     }

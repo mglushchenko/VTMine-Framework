@@ -24,42 +24,43 @@
 
 namespace vtmine {
 
-class IStreamLogger: public ILogger
-{
+class IStreamLogger: public ILogger {       // TODO: rename → StreamLogger
 public:
     /**
-     * \brief Stream logger constructor.
-     * \param settings -- configuration details.
-     * \param out -- output stream.
+     *  \brief Stream logger constructor.               // TODO: ← везде разобраться с выравниванием комментов
+     *  \param settings -- configuration details.
+     *  \param out -- output stream.
      */
     IStreamLogger(const FrameworkSettings* settings, std::ofstream* out);
 
     /**
-     * \brief Stream logger constructor with no output stream parameter.
+     *  \brief Stream logger constructor with no output stream parameter.
      * \param settings -- configuration details.
      */
     IStreamLogger(const FrameworkSettings* settings);
 
     /// Stream logger destructor.
-    ~IStreamLogger() override { delete _out; }
+    virtual ~IStreamLogger() override { delete _out; }      // TODO: здесь НЕ удаляем, удаляем там, где создали (RAII)
+
 
     /// Opens output stream.
-    void open() override {}
+    virtual void open() override {}
 
     /// Closes output stream.
-    void close() override { _out->close(); }
+    virtual void close() override { _out->close(); }
 
     /**
      * \brief Checks whether the log is ready for use.
      * \return True if output stream is open.
      */
-    bool isReady() override { return _out->is_open(); }
+    virtual bool isReady() override { return _out->is_open(); }
 
     int reportEvent (const char* unitName, const char* text,
                LogLevel eventType = LogLevel::INFO, unsigned int errorCode = 0) override;
 
 protected:
-    std::ofstream* _out = nullptr;
+    std::ofstream* _out = nullptr;      // TODO: этот объект не управляет временем жизни указателя!
+                                        // см. идиому RAII
 };
 
 } // namespace vtmine

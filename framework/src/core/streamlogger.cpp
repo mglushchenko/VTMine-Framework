@@ -15,10 +15,10 @@
 namespace vtmine {
 
 IStreamLogger::IStreamLogger(const FrameworkSettings* settings,
-                             std::ofstream* out):
-    ILogger(settings), _out(out)
+                             std::ofstream* out)
+                : ILogger(settings)
+                , _out(out)
 {
-
 }
 
 int IStreamLogger::reportEvent(const char* unitName, const char* text,
@@ -36,7 +36,7 @@ int IStreamLogger::reportEvent(const char* unitName, const char* text,
     message += " Error code: " + errorCode;
 
     if (!_out)
-        std::cout << message;
+        std::cout << message;           // TODO: → std::cerr
     else
         *_out << message;
 

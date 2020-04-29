@@ -66,8 +66,8 @@ protected:
     void prepareCandidatesList();
 
     /**
-     * \brief Proccesses a plugin loader and tries to add it to the list.
-     * \param curLoader -- Loader to be proccessed.
+     *  \brief Proccesses a plugin loader and tries to add it to the list.
+     *  \param curLoader -- Loader to be proccessed.
      */
     void processPluginLoader(QPluginLoader* curLoader);
 

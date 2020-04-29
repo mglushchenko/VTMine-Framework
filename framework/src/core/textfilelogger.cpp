@@ -15,8 +15,8 @@
 
 namespace vtmine {
 
-ITextFileLogger::ITextFileLogger(const FrameworkSettings* settings):
-    IStreamLogger(settings)
+ITextFileLogger::ITextFileLogger(const FrameworkSettings* settings)
+    : IStreamLogger(settings)
 {
     _logFileName = settings->getLogFileName();
 }

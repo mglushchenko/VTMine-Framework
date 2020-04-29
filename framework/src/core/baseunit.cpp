@@ -34,6 +34,8 @@ void BaseUnit::logCritical(const char* message)
     _logger->reportEvent(_unitName, message, LogLevel::CRITICAL);
 }
 
+// это ^^^ все уходит в заголовочный файл, т.к. идеально для inline-оптимизации
+
 
 
 } // namespace vtmine

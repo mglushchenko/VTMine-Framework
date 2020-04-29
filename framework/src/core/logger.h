@@ -17,22 +17,47 @@
 
 
 #include "framework_settings.h"
-
+//#include "utilities.h"
 
 namespace vtmine {
 
-enum class LogLevel: unsigned char {
-    INFO = 0, WARNING, EXCEPTION, CRITICAL
+// TODO: перенести вложенным классом внутрь ILogger
+enum class LogLevel: unsigned char
+{
+    INFO = 0,
+    WARNING,
+    EXCEPTION,
+    CRITICAL
 };
 
 /***************************************************************************//**
  *  Default logger.
  ******************************************************************************/
 class ILogger {
+
+public:
+
+
+//    // Комент, что все три нижележащие тип и две константы д.б. согласованы.
+
+//    enum class LogLevel : unsigned char
+//    {
+//        INFO = 0,
+//        WARNING,
+//        EXCEPTION,
+//        CRITICAL
+//    };
+
+//    const UByte EVENT_TYPES_NUM = 4;
+
+//    /// Event types. Reflects the LogLevel enum.
+//    const char* EVENT_TYPES[EVENT_TYPES_NUM] = { "INFO", "WARNING", "EXCEPTION", "CRITICAL" };
+
+
 public:
     /**
-     * \brief Logger constructor.
-     * \param settings -- configuration details.
+     *  \brief Logger constructor.
+     *  \param settings -- configuration details.
      */
     ILogger(const FrameworkSettings* settings);
 
@@ -55,16 +80,24 @@ public:
      * \param text -- message contents.
      * \return Event ID.
      */
-    virtual int reportEvent(const char* unitName, const char* text,
-                    LogLevel eventType = LogLevel::INFO, unsigned int errorCode = 0) = 0;
+    virtual int reportEvent(const char* unitName,
+                            const char* text,
+                            LogLevel eventType = LogLevel::INFO,
+                            unsigned int errorCode = 0) = 0;
 
 protected:
     /// Event types. Reflects the LogLevel enum.
     const char* eventTypes[4] = {"INFO", "WARNING", "EXCEPTION", "CRITICAL"};
 
+
     /// Minimum output level, defaults to INFO.
-    int _outputLvl = 0;
+    int _outputLvl = 0;                             // TODO: сделать getter под него
 };
+
+// TODO: либо это ^^^ не интерфейс, а просто Logger, либо расщеплять на ILogger
+// без _outputLvl, и делать еще один промежуточный класс BaseLogger чисто для
+// хранения _outputLvl
+
 
 } // namespace vtmine
 

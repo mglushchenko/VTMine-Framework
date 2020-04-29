@@ -83,7 +83,7 @@ protected:
     // Plugins settings
 
     /// Plugin files.
-    std::vector<std::string> _plugins;
+    std::vector<std::string> _plugins;          // TODO: → QString везде
 
     /// Base plugins directory.
     QDir _basepluginsDir;
@@ -166,7 +166,7 @@ protected:
      * \param config -- configuration JSON.
      * \return Minimum outout level.
      */
-    std::string getOutputLevel(const nlohmann::json& config);
+    std::string getOutputLevel(const nlohmann::json& config);   // std::string → QString
 
 protected:
     // configuration JSON keys
