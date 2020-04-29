@@ -10,24 +10,40 @@
 
 
 #include <iostream>
+#include <QDir>
 
+#include "framework_def_impl.h"
 #include "plugin_manager.h"
 #include "vtmexception.h"
 
 
 namespace vtmine {
 
-PluginManager::PluginManager(const FrameworkSettings* settings)
+PluginManager::PluginManager(const IFramework* owner, ILogger* logger):
+    BaseUnit(owner, logger)
 {
+     FrameworkSettings* settings = ((FrameworkDefImpl*)owner)->getSettings();
     _pluginFileNames = settings->getPluginFileNames();
     _mainPluginId = settings->getMainPluginId();
     _allowOptimizeFileList = settings->getAllowOptimize();
+
+    _unitName = "Plugin manager";
+
+    _basePluginsDir = settings->getPluginsBaseDir();
+}
+
+PluginManager::~PluginManager()
+{
+    unloadPlugins();
 }
 
 void PluginManager::loadPlugins()
 {
     if(_alreadyLoaded)
+    {
+        logError("Plugins already loaded!");
         throw VTMException("Plugins already loaded!");
+    }
 
     prepareCandidatesList();
     loadCandidates();
@@ -35,17 +51,22 @@ void PluginManager::loadPlugins()
     _alreadyLoaded = true;
 }
 
+void PluginManager::unloadPlugins()
+{
+    for (std::pair<std::string, QObject*> curr: _plugins)
+    {
+        if (!((IPlugin*)curr.second)->deactivate())
+        {
+            logError(("Failed to deactivate plugin " + curr.first + ".").c_str());
+        }
+    }
+}
+
 void PluginManager::prepareCandidatesList()
 {
-   for (std::string plugin: _pluginFileNames) // ← для QString это замечание, возможно, будет неактуально,
-                                              // но для обычных строк используем const std::string&
+   for (const QString& plugin: _pluginFileNames)
    {
-
-       // TODO: когда работаем изначально с Qt (загружаем настройки УЖЕ из
-       // окружения Qt, т.к. есть MainApplication), то решаем СРАЗУ работать c QString
-
-       // ?: should it be a QString from the start or is this type cast OK? ←←←← YES!
-       QPluginLoader* curLoader = new QPluginLoader((const QString&)plugin);
+       QPluginLoader* curLoader = new QPluginLoader(_basePluginsDir.absoluteFilePath(plugin));
        processPluginLoader(curLoader);
    }
 }
@@ -56,10 +77,7 @@ void PluginManager::processPluginLoader(QPluginLoader* curLoader)
     if(!curPluginInstance)
     {
         QString errStr = curLoader->errorString();
-        std::cout << errStr.toStdString();          // TODO: работаем тут с логом!
-
-        // TODO: возможно, какие-то (выработать!) настройки должны регулировать поведение в
-        // ситуации, когда отдельный файл-плагина почему-то не загружается
+        logError(errStr.toStdString().c_str());
 
         delete curLoader;
         return;
@@ -69,7 +87,7 @@ void PluginManager::processPluginLoader(QPluginLoader* curLoader)
     if(!curPlugin)
     {
         curLoader->unload();
-        delete curLoader;                           // TODO: работаем с логом, и то же про настройки
+        delete curLoader;
         return;
     }
     _candidates.push_back(curLoader);
@@ -90,12 +108,12 @@ void PluginManager::loadCandidates()
         {
             LoadResult lr = tryLoadPlugin(*cur);
 
-            if(lr == lrExclude || lr == lrRegFailed)
+            if(lr == LoadResult::exclude || lr == LoadResult::regFailed)
             {
-                // TODO: логгировать информацию о неуспешности + причина неуспешности
-
                 (*cur)->unload();
                 delete (*cur);
+
+                logError("Failed to load plugin!");
 
                 cur = _candidates.erase(cur);
 
@@ -103,20 +121,8 @@ void PluginManager::loadCandidates()
                 continue;
             }
 
-            if(lr == lrLoaded)
+            if(lr == LoadResult::loaded)
             {
-                // TODO: добавить коллекцию (vector) с указателями на загруженные
-                // плагины + имена соответств. файлов (через лоадеры?!)
-                // и каждый раз при успешной загрузке добавлять соотв. элемент
-                // в коллекцию. Ее впоследствии можно/нужно будет использовать
-                // для 1) выгрузки загруженных плагинов в порядке, обратном их
-                // загрузки (вообще, плагины нужно (написать в док!) обязать уметь
-                // выгружать максимально корректно даже в случае, когда его,
-                // плагина, зависимости уже утрачены)
-                // 2) для подготовки adviseList (топологически сортированный список
-                // зависимостей, см. параметр _allowOptimizeFileList)
-
-
                 cur = _candidates.erase(cur);
                 hasExecutions = true;
                 continue;
@@ -132,20 +138,17 @@ void PluginManager::loadCandidates()
     } while(incomplete);  // do .. while
 }
 
-// TODO: вынести для дальнейшего размышления (Glo-карточка? док?) систему
-// глобальных уведомлений плагинов о событиях фреймворка — например, что такой-то
-// плагин был уже выгружен — сделать через: систему сигналов/слотов ЛИБО, что вероятнее
-// добавить соответствующий интерфейс в сам плагин
-
-
-
 PluginManager::LoadResult PluginManager::tryLoadPlugin(QPluginLoader *curLoader)
-{                                                                //  ^ TODO: везде проверить кодстайл
+{
     QObject* curPluginInstance = curLoader->instance();
     IPlugin* curPlugin = qobject_cast<IPlugin*>(curPluginInstance);
 
-    if(checkForDuplicateID(curPlugin))      // TODO: ругаться в логгер, м.б. здесь эксцепция, если соотв. настройки?
-        return lrExclude;
+    if(checkForDuplicateID(curPlugin))
+    {
+        logError("Plugin with this ID has already been loaded!");
+
+        return LoadResult::exclude;
+    }
 
     LoadResult lres = loadPlugin(curLoader, curPluginInstance, curPlugin);
 
@@ -155,19 +158,18 @@ PluginManager::LoadResult PluginManager::tryLoadPlugin(QPluginLoader *curLoader)
 PluginManager::LoadResult PluginManager::loadPlugin(QPluginLoader *loader,
                                                     QObject *instance, IPlugin *plugin)
 {
-    bool res = plugin->registerItself(_owner);  // TODO: переименовать в activate
+    bool res = plugin->activate(_owner);
     if (!res)
-        return lrRegFailed;
+        return LoadResult::regFailed;
 
-    std::string id = plugin->getID();       // TODO: const std::string& id
+    const std::string& id = plugin->getID().toStdString();
     _plugins[id] = instance;
-
-    return lrLoaded;
+    return LoadResult::loaded;
 }
 
 bool PluginManager::checkForDuplicateID(IPlugin* plugin)
 {
-    std::string id = plugin->getID();
+    const std::string& id = plugin->getID().toStdString();
     return _plugins.find(id) != _plugins.end();
 }
 

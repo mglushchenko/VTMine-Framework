@@ -1,6 +1,6 @@
 /***************************************************************************//**
  *  \file
- *  \brief     VTMine Framework application starter.
+ *  \brief     VTMine Framework plugin manager.
  *  \author    Sergey Shershakov, Maria Gluschenko
  *  \version   0.1.0
  *  \date      19.02.2020
@@ -17,45 +17,49 @@
 
 
 #include <QPluginLoader>
+#include <unordered_map>
 
 #include "../extlib/json.hpp"
 
-#include "framework.h"
 #include "framework_settings.h"
 #include "iplugin.h"
-
+#include "baseunit.h"
 
 
 namespace vtmine {
 
+class BaseUnit;
+
 /***************************************************************************//**
- *  Default plugin manager.
+ *  Plugin manager.
  ******************************************************************************/
-class PluginManager {  // TODO: public BaseUnit {
+class PluginManager: public BaseUnit {
 
 public:
     typedef std::vector<QPluginLoader*> PluginLoadersList;
 
-    // TODO: заменить на enum class и можно избавиться от префиксов
-    enum LoadResult {
-            lrNothing,              ///< plugin was not loaded, nothing to do
-            lrLoaded,               ///< plugin was loaded, delete from candidate list
-            lrExclude,              ///< plugin was not loaded and should be excluded
-            lrRegFailed,            ///< there is an error on registerItself stage of plugin loading
-                                    ///< Should behave the same way as where a plugin is excluded
-                                    /// + some resources cleanup
-        }; // enum LoadResult
+    enum class LoadResult {
+        nothing = 0, loaded, exclude, regFailed
+    };
 
 public:
-    PluginManager(const FrameworkSettings* settings);   // TODO: добавить параметры для BaseUnit
-    //virtual ~PluginManager() {}
+    /// Class constructor.
+    PluginManager(const IFramework* owner, ILogger* logger);
 
-        // TODO: разобраться с деструктором, де-инициализировать плагины (добавить
-        // им соответствующую командочку, выгрузить объекты QObject/... из памяти
-
+    /// Class destructor.
+    ~PluginManager();
 
     /// Performs plugin loading.
-    virtual void loadPlugins();
+    void loadPlugins();
+
+    /// Performs plugin unloading.
+    void unloadPlugins();
+
+    /// Main plugin ID getter.
+    std::string getMainPluginID() const { return _mainPluginId; }
+
+    /// Plugins map getter.
+    std::unordered_map<std::string, QObject*> getPlugins() const { return _plugins; }
 
 protected:
     /// Prepares plugins for loading.
@@ -89,24 +93,27 @@ protected:
     /// Checks if plugin with given ID has already been loaded.
     bool checkForDuplicateID(IPlugin* plugin);
 
-private:
+protected:
     /// Names of plugin files to be loaded.
-    std::vector<std::string> _pluginFileNames;
+    std::vector<QString> _pluginFileNames;
 
-    /// Plugin to be loaded first. ← ему будет передано управление, но совершенно не значит, что он загружен первым
+    /// ID of the main plugin.
     std::string _mainPluginId;
 
-    /// If true, the manager can perform a topological sort on plugins to load
-    /// them in linear time later.
+    /// If true, the manager can perform a topological sort
+    /// on plugins to load them in linear time later.
     bool _allowOptimizeFileList = true;
 
-    // Документация?
+    /// Candidates for loading.
     PluginLoadersList _candidates;
-    std::map<std::string, QObject*> _plugins;
 
-    bool _alreadyLoaded;
+    /// Map of plugins and their IDs.
+    std::unordered_map<std::string, QObject*> _plugins;
 
-    IFramework* _owner;
+    QDir _basePluginsDir;
+
+    /// Flag indicating whether the plugins have already been loaded.
+    bool _alreadyLoaded = false;
 };
 
 } // namespace vtmine

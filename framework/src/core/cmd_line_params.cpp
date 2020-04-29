@@ -17,6 +17,8 @@
 #include "cmd_line_params.h"
 #include "vtmexception.h"
 #include "framework_settings.h"
+#include "help_message.h"
+
 #include "../extlib/json.hpp"
 
 
@@ -40,21 +42,13 @@ bool CmdLineParams::parse(int argc, char* argv[])
         // Configuration file
         if (strcmp(argv[i], "-c") == 0 && i != argc - 1)
         {
-            _configFileName = argv[i + 1];
+            _configFileName = argv[i+1];
             configFilePassed = true;
         }
         // Help
         if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0)
         {
-            std::ifstream fin("../../docs/spec/cmd_params.md"); // TODO: не стоит делать отд. файлом
-            if (fin.is_open())
-            {
-                std::string s;
-                while (std::getline(fin, s))
-                    std::cout << s << std::endl;
-            }
-            else
-                throw VTMException("Can't find help file!");
+            std::cout << helpMsg;
         }
     }
 

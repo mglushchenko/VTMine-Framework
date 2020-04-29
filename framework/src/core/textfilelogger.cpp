@@ -9,11 +9,16 @@
  ******************************************************************************/
 
 
+#include "textfilelogger.h"
 #include "vtmexception.h"
 
 
 namespace vtmine {
 
-
+ITextFileLogger::ITextFileLogger(const FrameworkSettings* settings):
+    IStreamLogger(settings)
+{
+    _logFileName = settings->getLogFileName();
+}
 
 } // namespace vtmine

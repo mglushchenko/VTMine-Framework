@@ -1,6 +1,6 @@
 /***************************************************************************//**
  *  \file
- *  \brief     VTMine Framework application starter.
+ *  \brief     VTMine Framework default framework.
  *  \author    Sergey Shershakov, Maria Gluschenko
  *  \version   0.1.0
  *  \date      19.02.2020
@@ -18,15 +18,11 @@
 
 #include "framework.h"
 #include "logger.h"
-#include "plugin_manager.h"             // TODO: заменить forward declaration
+#include "baseunit.h"
+#include "plugin_manager.h"
 #include "cmd_line_params.h"
 #include "framework_settings.h"
 #include "vtmexception.h"
-
-
-
-// TODO: заменить forward declaration
-class PluginManager;
 
 
 namespace vtmine {
@@ -43,31 +39,46 @@ public:
     virtual ~FrameworkDefImpl();
 
     /** \brief Initializes the framework with user-specified parameters.
-     * \param params -- configuration parameters parsed from command line.
+     *  \param params -- configuration parameters parsed from command line.
      */
     virtual void init(const CmdLineParams& params);
 
     // IFramework implementations
-    /** @brief Virtual getter for logger.
-     * @return An instance of Logger.
+    /** \brief Virtual getter for logger.
+     *  \return An instance of Logger.
      */
-    virtual Logger* getLogger() const {return nullptr;}
+    virtual ILogger* getLogger() const { return _logger; }
 
     /** \brief Virtual getter for plugin manager.
-     * \return An instance of PluginManager.
+     *  \return An instance of PluginManager.
      */
     virtual PluginManager* getPluginManager() const {return _pluginManager;}
 
+    /**
+     * \brief Virtual getter for framework settings.
+     * \return An instance of FrameworkSettings.
+     */
+    virtual FrameworkSettings* getSettings() const {return _settings;}
+
 
 protected:
-    /// \brief Settings obtained from configuration parameters.
+    /// Settings obtained from configuration parameters.
     FrameworkSettings* _settings = nullptr;
 
-    Logger* _logger = nullptr;
+    /// Logger.
+    ILogger* _logger = nullptr;
+
+    /// Plugin manager.
     PluginManager* _pluginManager = nullptr;
+
+protected:
+    /// Helper method to initialize logger with desired configuration.
+    ILogger* makeLogger();
+
 }; // class FrameworkDefImpl
 
 } // namespace vtmine
+
 
 
 #endif // VTMINE_FRAMEWORK_CORE_FRAMEWORK_DEF_IMPL_H_

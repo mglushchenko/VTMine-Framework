@@ -14,8 +14,14 @@ add_executable(VTMine
     core/framework.h
     core/framework_def_impl.h
     core/framework_def_impl.cpp
+    core/baseunit.h
+    core/baseunit.cpp
     core/logger.h
     core/logger.cpp
+    core/streamlogger.h
+    core/streamlogger.cpp
+    core/textfilelogger.h
+    core/textfilelogger.cpp
     core/plugin_manager.h
     core/plugin_manager.cpp
     core/iplugin.h
@@ -28,6 +34,7 @@ add_executable(VTMine
     core/framework_settings.cpp
     core/vtmexception.h
     core/vtmexception.cpp
+    core/help_message.h
 )
 target_link_libraries(VTMine Qt5::Widgets)
 #target_link_libraries(VTMine PRIVATE nlohmann_json::nlohmann_json)

@@ -18,16 +18,16 @@
 
 namespace vtmine {
 
-IPlugin::IPlugin()
-{
+//bool IPlugin::activate(const IFramework* frmw) const
+//{
+//    // TODO: add actual logic
+//    return true;
+//}
 
-}
-
-bool IPlugin::registerItself(IFramework *frmw)
-{
-    // TODO: add actual logic
-    return true;
-}
+//bool IPlugin::deactivate()
+//{
+//    return true;
+//}
 
 
 } // namespace vtmine

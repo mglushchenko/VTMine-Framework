@@ -1,6 +1,6 @@
 /***************************************************************************//**
  *  \file
- *  \brief     VTMine Framework application starter.
+ *  \brief     VTMine Framework plugin interface.
  *  \author    Sergey Shershakov, Maria Gluschenko
  *  \version   0.1.0
  *  \date      09.04.2020
@@ -8,7 +8,7 @@
  *             This source is for internal use only — Restricted Distribution.
  *             All rights reserved.
  *
- *  Framework settings.
+ *  Plugin interface.
  *
  ******************************************************************************/
 
@@ -29,31 +29,36 @@ namespace vtmine {
  ******************************************************************************/
 class IPlugin
 {
-
-    // TODO: не понятно, должен ли этот интерфейс быть Q_OBJECT ?!?!
-
 public:
     /// Default constructor.
-    IPlugin();
+    //IPlugin();
 
-    // TODO: виртуальный деструктор?
+    virtual ~IPlugin() {}
 
+    /**
+     * \brief Activates plugin.
+     * \param frmw -- owner framework object.
+     * \return True in case of success.
+     */
+    virtual bool activate(const IFramework* frmw) const = 0;
 
-    bool registerItself(IFramework* frmw);
+    /**
+     * \brief Deactivates plugin.
+     * \return True in case of success.
+     */
+    virtual bool deactivate() = 0;
 
     /// ID Getter.
-    std::string getID() const { return _id; }   // TODO: переделать на QString
-private:                                        // TODO: ← protected
+    QString getID() const { return _id; }
+
+
+    /// Plugin states.
+    enum class State { loaded, active };
+
+protected:
     /// Plugin's unique ID.
-    std::string _id;
-
-
-    // TODO: список состояний плагинов:
-    // enum class State { loaded, active };
+    QString _id;
 };
-
-
-
 
 } // namespace vtmine
 

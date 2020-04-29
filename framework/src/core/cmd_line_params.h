@@ -44,7 +44,7 @@ public:
     bool parse(int argc, char* argv[]);
 
 
-private:
+protected:
     /// Configuration file name.
     std::string _configFileName;
 
