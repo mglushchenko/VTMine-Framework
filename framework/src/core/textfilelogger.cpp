@@ -15,8 +15,8 @@
 
 namespace vtmine {
 
-TextFileLogger::TextFileLogger(const FrameworkSettings* settings):
-    StreamLogger(settings)
+TextFileLogger::TextFileLogger(const FrameworkSettings* settings)
+               : StreamLogger(settings)
 {
     _logFileName = settings->getLogFileName();
 }

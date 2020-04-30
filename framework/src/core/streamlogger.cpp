@@ -15,8 +15,9 @@
 namespace vtmine {
 
 StreamLogger::StreamLogger(const FrameworkSettings* settings,
-                             std::ofstream* out):
-    ILogger(settings), _out(out)
+                             std::ofstream* out)
+            : ILogger(settings)
+            , _out(out)
 {
 
 }
