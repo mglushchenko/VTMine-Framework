@@ -35,6 +35,7 @@ add_executable(VTMine
     core/vtmexception.h
     core/vtmexception.cpp
     core/help_message.h
+    core/utilities.h
 )
 target_link_libraries(VTMine Qt5::Widgets)
 #target_link_libraries(VTMine PRIVATE nlohmann_json::nlohmann_json)

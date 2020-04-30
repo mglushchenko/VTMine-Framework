@@ -22,58 +22,65 @@
 
 namespace vtmine {
 
-class BaseUnit
-{
+class BaseUnit {
 public:
-    /**
-     * \brief Class constructor.
-     * \param frmv -- Framework object to which the unit belongs.
+    /** \brief Class constructor.
+     *  \param frmv -- Framework object to which the unit belongs.
      */
-    BaseUnit(const IFramework* frmv, ILogger* logger)
+    BaseUnit(IFramework* frmv, ILogger* logger)
+        : _owner(frmv)
+        , _logger(logger)
     {
-        _owner = frmv;
-        _logger = logger;
-        _logger->open();
+
     }
 
     /// Class destructor.
-    ~BaseUnit() {
-        _logger->close();
-    }
+    ~BaseUnit() { }
 
     /// Getter for owner framework object.
     const IFramework* getOwner() const { return _owner; }
 
     /// Getter for logger.
-    ILogger* getLogger() const { return _logger; }
+    ILogger* getLog() const { return _logger; }
 
-    /**
-     * \brief Adds an info level  message to the log.
-     * \param message -- info message
+    /** \brief Adds an info level  message to the log.
+     *  \param message -- info message
      */
-    void logInfo(const char* message);
+    void logI(const char* message)
+    {
+        _logger->reportEvent(_unitName, message, ILogger::LogLevel::INFO);
+    }
 
-    /**
-     * \brief Adds a warning level  message to the log.
-     * \param message -- info message
+    /** \brief Adds a warning level  message to the log.
+     *  \param message -- info message
      */
-    void logWarning(const char* message);
+    void logW(const char* message)
+    {
+        _logger->reportEvent(_unitName, message, ILogger::LogLevel::WARNING);
+    }
 
-    /**
-     * \brief Adds an error level  message to the log.
-     * \param message -- info message
+    /** \brief Adds an error level  message to the log.
+     *  \param message -- info message
      */
-    void logError(const char* message);
+    void logE(const char* message)
+    {
+        _logger->reportEvent(_unitName, message, ILogger::LogLevel::EXCEPTION);
+    }
 
-    /**
-     * \brief Adds a critical level  message to the log.
-     * \param message -- info message
+    /** \brief Adds a critical level  message to the log.
+     *  \param message -- info message
      */
-    void logCritical(const char* message);
+    void logC(const char* message)
+    {
+        _logger->reportEvent(_unitName, message, ILogger::LogLevel::CRITICAL);
+    }
+
+    /// Getter for unit name.
+    virtual const char* getUnitName() = 0;
 
 protected:
     /// Framework object to which the unit belongs.
-    const IFramework* _owner;
+    IFramework* _owner;
 
     /// Logger component.
     ILogger* _logger;

@@ -17,22 +17,34 @@
 
 
 #include "framework_settings.h"
+#include "utilities.h"
 
 
 namespace vtmine {
-
-enum class LogLevel: unsigned char {
-    INFO = 0, WARNING, EXCEPTION, CRITICAL
-};
 
 /***************************************************************************//**
  *  Default logger.
  ******************************************************************************/
 class ILogger {
 public:
-    /**
-     * \brief Logger constructor.
-     * \param settings -- configuration details.
+    /// Logging levels.
+    enum class LogLevel: unsigned char
+    {
+        INFO = 0,
+        WARNING,
+        EXCEPTION,
+        CRITICAL
+    };
+
+    /// Number of logging levels.
+    const static UByte EVENT_TYPES_NUM = 4;
+
+    /// Event types. Reflects the LogLevel enum.
+    const char* eventTypes[EVENT_TYPES_NUM] = {"INFO", "WARNING", "EXCEPTION", "CRITICAL"};
+
+public:
+    /** \brief Logger constructor.
+     *  \param settings -- configuration details.
      */
     ILogger(const FrameworkSettings* settings);
 
@@ -48,20 +60,16 @@ public:
     /// Checks whether the log is ready for use.
     virtual bool isReady() = 0;
 
-    /**
-     * \brief Adds a message to the log.
-     * \param unitName -- message source.
-     * \param eventType -- event type (info, warning, etc.)
-     * \param text -- message contents.
-     * \return Event ID.
+    /** \brief Adds a message to the log.
+     *  \param unitName -- message source.
+     *  \param eventType -- event type (info, warning, etc.)
+     *  \param text -- message contents.
+     *  \return Event ID.
      */
     virtual int reportEvent(const char* unitName, const char* text,
                     LogLevel eventType = LogLevel::INFO, unsigned int errorCode = 0) = 0;
 
 protected:
-    /// Event types. Reflects the LogLevel enum.
-    const char* eventTypes[4] = {"INFO", "WARNING", "EXCEPTION", "CRITICAL"};
-
     /// Minimum output level, defaults to INFO.
     int _outputLvl = 0;
 };

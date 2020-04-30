@@ -26,20 +26,21 @@
 
 namespace vtmine {
 
-class ITextFileLogger: public IStreamLogger
+class TextFileLogger: public StreamLogger
 {
 public:
     /**
      * \brief Text file logger constructor.
      * \param settings -- configuration details.
      */
-    ITextFileLogger(const FrameworkSettings* settings);
+    TextFileLogger(const FrameworkSettings* settings);
+
+    virtual ~TextFileLogger() override { delete _out; }
 
     /// Opens log file.
-    void open() override
-    {
-        _out = new std::ofstream(_logFileName);
-    }
+    virtual void open() override;
+
+    virtual void close() override;
 
 protected:
     /// Log file name.

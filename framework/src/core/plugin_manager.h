@@ -24,6 +24,7 @@
 #include "framework_settings.h"
 #include "iplugin.h"
 #include "baseunit.h"
+#include "utilities.h"
 
 
 namespace vtmine {
@@ -36,15 +37,13 @@ class BaseUnit;
 class PluginManager: public BaseUnit {
 
 public:
-    typedef std::vector<QPluginLoader*> PluginLoadersList;
-
     enum class LoadResult {
         nothing = 0, loaded, exclude, regFailed
     };
 
 public:
     /// Class constructor.
-    PluginManager(const IFramework* owner, ILogger* logger);
+    PluginManager(IFramework* owner, ILogger* logger);
 
     /// Class destructor.
     ~PluginManager();
@@ -61,12 +60,14 @@ public:
     /// Plugins map getter.
     std::unordered_map<std::string, QObject*> getPlugins() const { return _plugins; }
 
+    /// Unit name getter.
+    virtual const char* getUnitName() override;
+
 protected:
     /// Prepares plugins for loading.
     void prepareCandidatesList();
 
-    /**
-     * \brief Proccesses a plugin loader and tries to add it to the list.
+    /** \brief Proccesses a plugin loader and tries to add it to the list.
      * \param curLoader -- Loader to be proccessed.
      */
     void processPluginLoader(QPluginLoader* curLoader);
@@ -74,19 +75,17 @@ protected:
     /// Load plugins from the candidates list according to their dependencies.
     void loadCandidates();
 
-    /**
-     * \brief Tries to load a plugin.
+    /** \brief Tries to load a plugin.
      * \param curLoader -- Current plugin loader.
      * \return Load result.
      */
     LoadResult tryLoadPlugin(QPluginLoader* curLoader);
 
-    /**
-     * \brief Loads plugin and adds it to the map of loaded plugins.
-     * \param loader -- Plugin loader.
-     * \param instance -- Plugin instance.
-     * \param plugin -- Plugin interface.
-     * \return Load result.
+    /** \brief Loads plugin and adds it to the map of loaded plugins.
+     *  \param loader -- Plugin loader.
+     *  \param instance -- Plugin instance.
+     *  \param plugin -- Plugin interface.
+     *  \return Load result.
      */
     LoadResult loadPlugin(QPluginLoader* loader, QObject* instance, IPlugin* plugin);
 
@@ -94,6 +93,8 @@ protected:
     bool checkForDuplicateID(IPlugin* plugin);
 
 protected:
+    const char* unitName = "Plugin manager";
+
     /// Names of plugin files to be loaded.
     std::vector<QString> _pluginFileNames;
 

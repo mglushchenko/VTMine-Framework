@@ -116,55 +116,48 @@ protected:
 
     // Plugins configuration
 
-    /**
-     * \brief Gets plugins base directory from configuration JSON.
-     * \param config -- configuration JSON.
-     * \return Plugins base directory.
+    /** \brief Gets plugins base directory from configuration JSON.
+     *  \param config -- configuration JSON.
+     *  \return Plugins base directory.
      */
     std::string getPluginsBaseDir(const nlohmann::json& config);
 
-    /**
-     * \brief Gets plugin files names from configuration JSON.
-     * \param config -- configuration JSON.
-     * \return Plugin files names.
+    /** \brief Gets plugin files names from configuration JSON.
+     *  \param config -- configuration JSON.
+     *  \return Plugin files names.
      */
     std::vector<QString> getPluginFileNames(const nlohmann::json& config);
 
-    /**
-     * \brief Gets main plugin ID from configuration JSON.
-     * \param config -- configuration JSON.
-     * \return Main plugin ID.
+    /** \brief Gets main plugin ID from configuration JSON.
+     *  \param config -- configuration JSON.
+     *  \return Main plugin ID.
      */
     std::string getMainPluginId(const nlohmann::json& config);
 
-    /**
-     * \brief Gets optimization permission flag from configuration JSON.
-     * \param config -- configuration JSON.
-     * \return Optimization permission flag.
+    /** \brief Gets optimization permission flag from configuration JSON.
+     *  \param config -- configuration JSON.
+     *  \return Optimization permission flag.
      */
     bool getAllowOptimize(const nlohmann::json& config);
 
 protected:
     // Logger configuration
 
-    /**
-     * \brief Gets logger type from configuration JSON.
-     * \param config -- configuration JSON.
-     * \return Logger output type.
+    /** \brief Gets logger type from configuration JSON.
+     *  \param config -- configuration JSON.
+     *  \return Logger output type.
      */
     std::string getOutputType(const nlohmann::json& config);
 
-    /**
-     * \brief Gets log file name from configuration JSON.
-     * \param config -- configuration JSON.
-     * \return Log file name.
+    /** \brief Gets log file name from configuration JSON.
+     *  \param config -- configuration JSON.
+     *  \return Log file name.
      */
     std::string getFileName(const nlohmann::json& config);
 
-    /**
-     * \brief Gets minimum log level from configuration JSON.
-     * \param config -- configuration JSON.
-     * \return Minimum outout level.
+    /** \brief Gets minimum log level from configuration JSON.
+     *  \param config -- configuration JSON.
+     *  \return Minimum outout level.
      */
     std::string getOutputLevel(const nlohmann::json& config);
 

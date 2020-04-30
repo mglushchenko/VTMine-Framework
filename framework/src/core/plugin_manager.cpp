@@ -19,7 +19,7 @@
 
 namespace vtmine {
 
-PluginManager::PluginManager(const IFramework* owner, ILogger* logger):
+PluginManager::PluginManager(IFramework* owner, ILogger* logger):
     BaseUnit(owner, logger)
 {
      FrameworkSettings* settings = ((FrameworkDefImpl*)owner)->getSettings();
@@ -41,7 +41,7 @@ void PluginManager::loadPlugins()
 {
     if(_alreadyLoaded)
     {
-        logError("Plugins already loaded!");
+        logE("Plugins already loaded!");
         throw VTMException("Plugins already loaded!");
     }
 
@@ -57,9 +57,14 @@ void PluginManager::unloadPlugins()
     {
         if (!((IPlugin*)curr.second)->deactivate())
         {
-            logError(("Failed to deactivate plugin " + curr.first + ".").c_str());
+            logE(("Failed to deactivate plugin " + curr.first + ".").c_str());
         }
     }
+}
+
+const char* PluginManager::getUnitName()
+{
+    return _unitName;
 }
 
 void PluginManager::prepareCandidatesList()
@@ -77,7 +82,7 @@ void PluginManager::processPluginLoader(QPluginLoader* curLoader)
     if(!curPluginInstance)
     {
         QString errStr = curLoader->errorString();
-        logError(errStr.toStdString().c_str());
+        logE(errStr.toStdString().c_str());
 
         delete curLoader;
         return;
@@ -113,7 +118,7 @@ void PluginManager::loadCandidates()
                 (*cur)->unload();
                 delete (*cur);
 
-                logError("Failed to load plugin!");
+                logE("Failed to load plugin!");
 
                 cur = _candidates.erase(cur);
 
@@ -145,7 +150,7 @@ PluginManager::LoadResult PluginManager::tryLoadPlugin(QPluginLoader *curLoader)
 
     if(checkForDuplicateID(curPlugin))
     {
-        logError("Plugin with this ID has already been loaded!");
+        logE("Plugin with this ID has already been loaded!");
 
         return LoadResult::exclude;
     }

@@ -31,3 +31,8 @@ public:
 
 
 #endif // VTMINE_FRAMEWORK_CORE_FRAMEWORK_H_
+
+
+
+
+//---=== Комментарии на весь проект ===---

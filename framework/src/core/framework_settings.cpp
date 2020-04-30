@@ -45,12 +45,6 @@ bool FrameworkSettings::parseConfigJSON()
     nlohmann::json pluginsConfig = configJSON[pluginsConfiguration];
     std::string baseDir = getPluginsBaseDir(pluginsConfig);
     _pluginFileNames = getPluginFileNames(pluginsConfig);
-    for (size_t i = 0; i < _pluginFileNames.size(); ++i)
-    {
-//        if (!_pluginFileNames[i].isEmpty() && _pluginFileNames[i][0] == '?')
-//            _pluginFileNames[i] = QString::fromStdString(baseDir) +
-//                    _pluginFileNames[i].right(_pluginFileNames[i].length() - 1);
-    }
 
     _mainPluginId = getMainPluginId(pluginsConfig);
     _allowOptimizeFileList = getAllowOptimize(pluginsConfig);

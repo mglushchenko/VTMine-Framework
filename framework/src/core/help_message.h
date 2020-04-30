@@ -8,8 +8,8 @@
  *
 ******************************************************************************/
 
-#ifndef HELP_MESSAGE_H
-#define HELP_MESSAGE_H
+#ifndef VTMINE_FRAMEWORK_CORE_FRAMEWORK_HELP_MESSAGE_H_
+#define VTMINE_FRAMEWORK_CORE_FRAMEWORK_HELP_MESSAGE_H_
 
 
 namespace vtmine {
@@ -20,4 +20,4 @@ namespace vtmine {
 
 } // namespace vtmine
 
-#endif // HELP_MESSAGE_H
+#endif // VTMINE_FRAMEWORK_CORE_FRAMEWORK_HELP_MESSAGE_H_

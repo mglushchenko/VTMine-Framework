@@ -54,9 +54,8 @@ public:
      */
     virtual PluginManager* getPluginManager() const {return _pluginManager;}
 
-    /**
-     * \brief Virtual getter for framework settings.
-     * \return An instance of FrameworkSettings.
+    /** \brief Virtual getter for framework settings.
+     *  \return An instance of FrameworkSettings.
      */
     virtual FrameworkSettings* getSettings() const {return _settings;}
 

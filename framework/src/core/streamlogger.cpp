@@ -14,14 +14,14 @@
 
 namespace vtmine {
 
-IStreamLogger::IStreamLogger(const FrameworkSettings* settings,
+StreamLogger::StreamLogger(const FrameworkSettings* settings,
                              std::ofstream* out):
     ILogger(settings), _out(out)
 {
 
 }
 
-int IStreamLogger::reportEvent(const char* unitName, const char* text,
+int StreamLogger::reportEvent(const char* unitName, const char* text,
                               LogLevel eventType, unsigned int errorCode)
 {
     if ((int)eventType < _outputLvl)
@@ -43,7 +43,7 @@ int IStreamLogger::reportEvent(const char* unitName, const char* text,
     return 0;
 }
 
-IStreamLogger::IStreamLogger(const FrameworkSettings* settings):
+StreamLogger::StreamLogger(const FrameworkSettings* settings):
     ILogger(settings)
 {
 

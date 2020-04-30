@@ -15,10 +15,20 @@
 
 namespace vtmine {
 
-ITextFileLogger::ITextFileLogger(const FrameworkSettings* settings):
-    IStreamLogger(settings)
+TextFileLogger::TextFileLogger(const FrameworkSettings* settings):
+    StreamLogger(settings)
 {
     _logFileName = settings->getLogFileName();
+}
+
+void TextFileLogger::open()
+{
+    _out = new std::ofstream(_logFileName);
+}
+
+void TextFileLogger::close()
+{
+    _out->close();
 }
 
 } // namespace vtmine

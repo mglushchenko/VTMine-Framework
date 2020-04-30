@@ -17,7 +17,10 @@ namespace vtmine {
 FrameworkDefImpl::~FrameworkDefImpl()
 {
     delete _pluginManager;
+
+    _logger->close();
     delete _logger;
+
     delete _settings; 
 }
 
@@ -30,6 +33,7 @@ void FrameworkDefImpl::init(const CmdLineParams& params)
         throw VTMException("Invalid configuration file");
 
     _logger = makeLogger();
+    _logger->open();
 
     _pluginManager = new PluginManager(this, _logger);
     _pluginManager->loadPlugins();
@@ -45,11 +49,11 @@ ILogger* FrameworkDefImpl::makeLogger()
     if (_settings->getLoggerType() == "textFile")
     {
         std::string logFile = _settings->getLogFileName();
-        return new ITextFileLogger(_settings);
+        return new TextFileLogger(_settings);
     }
 
     // default output stream is std::cout
-    return new IStreamLogger(_settings);
+    return new StreamLogger(_settings);
 }
 
 

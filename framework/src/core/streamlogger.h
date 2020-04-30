@@ -24,38 +24,35 @@
 
 namespace vtmine {
 
-class IStreamLogger: public ILogger
+class StreamLogger: public ILogger
 {
 public:
-    /**
-     * \brief Stream logger constructor.
+    /** \brief Stream logger constructor.
      * \param settings -- configuration details.
      * \param out -- output stream.
      */
-    IStreamLogger(const FrameworkSettings* settings, std::ofstream* out);
+    StreamLogger(const FrameworkSettings* settings, std::ofstream* out);
 
-    /**
-     * \brief Stream logger constructor with no output stream parameter.
+    /** \brief Stream logger constructor with no output stream parameter.
      * \param settings -- configuration details.
      */
-    IStreamLogger(const FrameworkSettings* settings);
+    StreamLogger(const FrameworkSettings* settings);
 
     /// Stream logger destructor.
-    ~IStreamLogger() override { delete _out; }
+    ~StreamLogger() override { }
 
     /// Opens output stream.
     void open() override {}
 
     /// Closes output stream.
-    void close() override { _out->close(); }
+    void close() override { }
 
-    /**
-     * \brief Checks whether the log is ready for use.
+    /** \brief Checks whether the log is ready for use.
      * \return True if output stream is open.
      */
     bool isReady() override { return _out->is_open(); }
 
-    int reportEvent (const char* unitName, const char* text,
+    virtual int reportEvent (const char* unitName, const char* text,
                LogLevel eventType = LogLevel::INFO, unsigned int errorCode = 0) override;
 
 protected:

@@ -14,26 +14,5 @@
 
 namespace vtmine {
 
-void BaseUnit::logInfo(const char* message)
-{
-    _logger->reportEvent(_unitName, message, LogLevel::INFO);
-}
-
-void BaseUnit::logWarning(const char* message)
-{
-    _logger->reportEvent(_unitName, message, LogLevel::WARNING);
-}
-
-void BaseUnit::logError(const char* message)
-{
-    _logger->reportEvent(_unitName, message, LogLevel::EXCEPTION);
-}
-
-void BaseUnit::logCritical(const char* message)
-{
-    _logger->reportEvent(_unitName, message, LogLevel::CRITICAL);
-}
-
-
 
 } // namespace vtmine

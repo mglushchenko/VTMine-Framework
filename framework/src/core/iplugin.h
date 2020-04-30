@@ -27,8 +27,7 @@ namespace vtmine {
 /***************************************************************************//**
  *  Base plugin interface.
  ******************************************************************************/
-class IPlugin
-{
+class IPlugin {
 public:
     /// Default constructor.
     //IPlugin();
