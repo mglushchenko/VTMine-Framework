@@ -93,7 +93,7 @@ protected:
     bool checkForDuplicateID(IPlugin* plugin);
 
 protected:
-    const char* unitName = "Plugin manager";
+    const char* _unitName = "Plugin manager";
 
     /// Names of plugin files to be loaded.
     std::vector<QString> _pluginFileNames;

@@ -39,7 +39,7 @@ public:
      * \param frmw -- owner framework object.
      * \return True in case of success.
      */
-    virtual bool activate(const IFramework* frmw) const = 0;
+    virtual bool activate(IFramework* frmw) = 0;
 
     /**
      * \brief Deactivates plugin.

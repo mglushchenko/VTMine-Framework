@@ -22,6 +22,9 @@
 
 namespace vtmine {
 
+/***************************************************************************//**
+ *  Class representing framework base unit.
+ ******************************************************************************/
 class BaseUnit {
 public:
     /** \brief Class constructor.
@@ -48,7 +51,7 @@ public:
      */
     void logI(const char* message)
     {
-        _logger->reportEvent(_unitName, message, ILogger::LogLevel::INFO);
+        _logger->reportEvent(getUnitName(), message, ILogger::LogLevel::INFO);
     }
 
     /** \brief Adds a warning level  message to the log.
@@ -56,7 +59,7 @@ public:
      */
     void logW(const char* message)
     {
-        _logger->reportEvent(_unitName, message, ILogger::LogLevel::WARNING);
+        _logger->reportEvent(getUnitName(), message, ILogger::LogLevel::WARNING);
     }
 
     /** \brief Adds an error level  message to the log.
@@ -64,7 +67,7 @@ public:
      */
     void logE(const char* message)
     {
-        _logger->reportEvent(_unitName, message, ILogger::LogLevel::EXCEPTION);
+        _logger->reportEvent(getUnitName(), message, ILogger::LogLevel::EXCEPTION);
     }
 
     /** \brief Adds a critical level  message to the log.
@@ -72,7 +75,7 @@ public:
      */
     void logC(const char* message)
     {
-        _logger->reportEvent(_unitName, message, ILogger::LogLevel::CRITICAL);
+        _logger->reportEvent(getUnitName(), message, ILogger::LogLevel::CRITICAL);
     }
 
     /// Getter for unit name.
@@ -85,8 +88,6 @@ protected:
     /// Logger component.
     ILogger* _logger;
 
-    /// Unit name.
-    const char* _unitName;
 }; // class BaseUnit
 
 } // namespace vtmine

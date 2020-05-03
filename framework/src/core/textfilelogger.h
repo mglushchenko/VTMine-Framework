@@ -26,6 +26,9 @@
 
 namespace vtmine {
 
+/***************************************************************************//**
+ *  Logger with output to text file.
+ ******************************************************************************/
 class TextFileLogger: public StreamLogger
 {
 public:
