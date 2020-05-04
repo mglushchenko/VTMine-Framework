@@ -36,7 +36,7 @@ public:
     FrameworkDefImpl(){}
 
     /// Virtual destructor.
-    virtual ~FrameworkDefImpl();
+    virtual ~FrameworkDefImpl() override;
 
     /** \brief Initializes the framework with user-specified parameters.
      *  \param params -- configuration parameters parsed from command line.

@@ -42,7 +42,7 @@ public:
     StreamLogger(const FrameworkSettings* settings);
 
     /// Stream logger destructor.
-    ~StreamLogger() override { }
+    virtual ~StreamLogger() override { }
 
     /// Opens output stream.
     void open() override {}

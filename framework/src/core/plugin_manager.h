@@ -46,7 +46,7 @@ public:
     PluginManager(IFramework* owner, ILogger* logger);
 
     /// Class destructor.
-    ~PluginManager();
+    virtual ~PluginManager() override;
 
     /// Performs plugin loading.
     void loadPlugins();

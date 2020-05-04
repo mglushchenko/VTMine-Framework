@@ -50,13 +50,9 @@ int AppStarter::run(int argc, char* argv[])
 void AppStarter::reportException(const char* what, const char* capt)
 {
     std::cerr << "Module " << capt << " asserts: " << what;
-
-   // потом здесь можно будет навернуть логику,
-   // которая переназначит вывод в другой объект
 }
 
 
-// TODO: add 'capt' parameter of reportException
 void AppStarter::makeDefFramework(int argc, char* argv[])
 {
     _cmdlParams.parse(argc, argv);

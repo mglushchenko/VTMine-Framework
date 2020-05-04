@@ -67,8 +67,7 @@ std::string FrameworkSettings::getPluginsBaseDir(const nlohmann::json& config)
 {
     if (config.find(pluginBaseDir) == config.end())
     {
-        // TODO: redirect message to logger
-        std::cout << "No plugins base directory set\n";
+        std::cerr << "No plugins base directory set\n";
         return "";
     }
 

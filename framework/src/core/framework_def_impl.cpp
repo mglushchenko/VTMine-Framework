@@ -40,7 +40,8 @@ void FrameworkDefImpl::init(const CmdLineParams& params)
 
     std::string mainPluginID = _pluginManager->getMainPluginID();
     IPlugin* mainPlugin = (IPlugin*)_pluginManager->getPlugins()[mainPluginID];
-    mainPlugin->activate(this);
+    if (mainPlugin)
+        mainPlugin->activate(this);
 }
 
 ILogger* FrameworkDefImpl::makeLogger()

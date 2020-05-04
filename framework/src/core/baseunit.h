@@ -38,7 +38,7 @@ public:
     }
 
     /// Class destructor.
-    ~BaseUnit() { }
+    virtual ~BaseUnit() {}
 
     /// Getter for owner framework object.
     const IFramework* getOwner() const { return _owner; }
