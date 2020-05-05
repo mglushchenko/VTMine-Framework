@@ -52,12 +52,12 @@ public:
     /** \brief Virtual getter for plugin manager.
      *  \return An instance of PluginManager.
      */
-    virtual PluginManager* getPluginManager() const {return _pluginManager;}
+    virtual PluginManager* getPluginManager() const { return _pluginManager; }
 
     /** \brief Virtual getter for framework settings.
      *  \return An instance of FrameworkSettings.
      */
-    virtual FrameworkSettings* getSettings() const {return _settings;}
+    virtual FrameworkSettings* getSettings() const { return _settings; }
 
 
 protected:

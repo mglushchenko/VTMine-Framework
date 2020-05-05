@@ -33,12 +33,12 @@ namespace vtmine {
 class FrameworkSettings {
 public:
     /** \brief Framework settings contructor.
-     *  \param plugins -- names of plugin files.
+     *  \param configFileName -- configuration file name.
      */
     FrameworkSettings(const std::string& configFileName);
 
 
-    /** \brief Parses plugin configuration from config file.
+    /** \brief Parses framework components configuration from config file.
      *  \return True in case of success.
      */
     bool parseConfigJSON();
@@ -55,7 +55,7 @@ public:
     }
 
     /// Getter for plugins base directory.
-    QDir getPluginsBaseDir() const { return _basepluginsDir; }
+    QDir getPluginsBaseDir() const { return _basePluginsDir; }
 
     /// Getter for main plugin ID.
     std::string getMainPluginId() const { return _mainPluginId; }
@@ -82,11 +82,8 @@ protected:
 protected:
     // Plugins settings
 
-    /// Plugin files.
-    std::vector<std::string> _plugins;
-
     /// Base plugins directory.
-    QDir _basepluginsDir;
+    QDir _basePluginsDir;
 
     /// Names of plugin files to be loaded.
     std::vector<QString> _pluginFileNames;

@@ -33,13 +33,10 @@ public:
     /** \brief Getter for configuration file name.
      *  \returns Configuration file name.
      */
-    std::string getConfigFileName() const {return _configFileName;}
+    std::string getConfigFileName() const { return _configFileName; }
 
     /** \brief Parses input collection of string parameters
-     *  \returns true if parsing was successful; false, otherwise
-     *
-     *  Subject for further clarification: parsing should be performed
-     *  according to specification.
+     *  \returns true if parsing was successful; false, otherwise.
      */
     bool parse(int argc, char* argv[]);
 

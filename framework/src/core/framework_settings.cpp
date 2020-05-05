@@ -72,7 +72,7 @@ std::string FrameworkSettings::getPluginsBaseDir(const nlohmann::json& config)
     }
 
     std::string baseDir = config[pluginBaseDir].get<std::string>();
-    _basepluginsDir = QDir(QString::fromStdString(baseDir));
+    _basePluginsDir = QDir(QString::fromStdString(baseDir));
 
     return baseDir;
 }
