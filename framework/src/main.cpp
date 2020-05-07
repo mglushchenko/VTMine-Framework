@@ -25,11 +25,5 @@ int main(int argc, char* argv[])
 
     AppStarter appStarter;
     return appStarter.run(argc, argv);
-
-//    QApplication app(argc, argv);     // этот код пока оставим для отладочных
-//    QPushButton button("hello");      // целей
-//    button.show();
-
-//    return app.exec();
 }
 

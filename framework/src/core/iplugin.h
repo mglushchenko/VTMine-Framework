@@ -29,9 +29,6 @@ namespace vtmine {
  ******************************************************************************/
 class IPlugin {
 public:
-    /// Default constructor.
-    //IPlugin();
-
     virtual ~IPlugin() {}
 
     /**

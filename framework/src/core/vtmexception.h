@@ -31,7 +31,7 @@ public:
      *  \param message -- error message.
      */
     VTMException(const std::string& message)
-                : errorMessage(message)
+                : _errorMessage(message)
     {
     }
 
@@ -40,12 +40,12 @@ public:
      */
     const char* what() const throw ()
     {
-        return errorMessage.c_str();
+        return _errorMessage.c_str();
     }
 
 protected:
     /// Error description.
-    std::string errorMessage;
+    std::string _errorMessage;
 
 }; // class VTMException
 

@@ -45,7 +45,7 @@ public:
     virtual ~StreamLogger() override { }
 
     /// Opens output stream.
-    void open() override {}
+    void open() override { }
 
     /// Closes output stream.
     void close() override { }

@@ -43,6 +43,7 @@ public:
     /// Opens log file.
     virtual void open() override;
 
+    /// Closes log file.
     virtual void close() override;
 
 protected:

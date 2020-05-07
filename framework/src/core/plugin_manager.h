@@ -93,6 +93,7 @@ protected:
     bool checkForDuplicateID(IPlugin* plugin);
 
 protected:
+    /// Unit name.
     const char* _unitName = "Plugin manager";
 
     /// Names of plugin files to be loaded.
