@@ -1,1 +1,1 @@
-# VTMine-Framework
+# VTMine Framework Main Project

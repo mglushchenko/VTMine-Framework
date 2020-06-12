@@ -1,0 +1,2 @@
+-c <filename.json> -- pass configuration json file to the program
+-h or --help -- help

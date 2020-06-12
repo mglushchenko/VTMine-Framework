@@ -1,0 +1,17 @@
+{
+	"pluginsConfig" : {
+		"pluginBaseDir": "C:/develop/projects/cpp/vtm_framework_new/framework/vtm_plugins/",		
+		"pluginFileNames" : [
+			"libAttendancePlugin.dll"
+		],		
+		"mainPlugin" : "libAttendancePlugin",		
+		"pluginSettings" : {},	
+		"allowOptimizeFileList": false
+	},
+	"loggerConfig" : {
+		"outputType" : "textFile",
+		"fileName" : "framework_log.txt",
+		"minOutputLevel" : "INFO"
+	}
+
+}
